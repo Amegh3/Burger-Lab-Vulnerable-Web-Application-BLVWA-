@@ -1,4 +1,4 @@
-# 🍔 Burger Lab Vulnerable Web Application (BLVWA)
+🍔 Burger Lab Vulnerable Web Application (BLVWA)
 
 Welcome to **Burger Labs**, a production-grade, high-fidelity e-commerce platform designed exclusively for **Cybersecurity Research and Penetration Testing**. This platform contains **100+ intentional vulnerabilities** scattered across its molecularly-inspired architecture.
 
@@ -196,4 +196,4 @@ Burger Labs is **not a real company**. It is a strictly fictional entity created
 *   **Contact**: ttariyahgema@gmail.com
 *   **LinkedIn**: https://www.linkedin.com/in/ameghayiratt/
 
-For the official 150-page PDF Solution Guide, please contact the creator directly.
+
