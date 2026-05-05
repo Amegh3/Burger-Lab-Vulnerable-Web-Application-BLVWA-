@@ -1,0 +1,258 @@
+// public/assets/scss/main.scss
+$primary-red: #E63946;
+$accent-orange: #F4A261;
+$bg-cream: #FDFCDC;
+$text-charcoal: #2B2D42;
+$white: #FFFFFF;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: $bg-cream;
+    color: $text-charcoal;
+    overflow-x: hidden;
+}
+
+// Navbar
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: $white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: $primary-red;
+        text-decoration: none;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+
+        a {
+            text-decoration: none;
+            color: $text-charcoal;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+
+            &:hover {
+                color: $primary-red;
+            }
+        }
+    }
+}
+
+// Hero Section
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4rem 5%;
+    background: linear-gradient(135deg, #FFF9EB, $bg-cream);
+
+    .hero-text {
+        flex: 1;
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: $text-charcoal;
+            
+            span {
+                color: $primary-red;
+            }
+        }
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #555;
+            max-width: 500px;
+        }
+    }
+
+    .hero-image {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+            &:hover {
+                transform: scale(1.05) rotate(2deg);
+            }
+        }
+    }
+}
+
+// Section Header
+.section-header {
+    text-align: center;
+    padding: 4rem 0 2rem;
+    h2 {
+        font-size: 2.5rem;
+        color: $text-charcoal;
+        margin-bottom: 1rem;
+    }
+}
+
+// Grid System
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    padding: 2rem 5% 5rem;
+}
+
+// Burger Card
+.burger-card {
+    background: $white;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0,0,0,0.05);
+
+    &:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+    }
+
+    .card-img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .card-content {
+        padding: 2rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.5rem;
+            color: $text-charcoal;
+        }
+
+        .price {
+            font-weight: 700;
+            color: $primary-red;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .ingredients {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .description {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            flex: 1;
+        }
+    }
+}
+
+// Buttons
+.btn-primary {
+    background-color: $primary-red;
+    color: $white;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+
+    &:hover {
+        background-color: darken($primary-red, 10%);
+        transform: scale(1.02);
+    }
+}
+
+.btn-order {
+    background-color: $accent-orange;
+    color: $white;
+    padding: 1rem;
+    border: none;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+
+    &:hover {
+        background-color: darken($accent-orange, 10%);
+        transform: scale(0.98);
+    }
+}
+
+// Forms
+.glass-input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    outline: none;
+    margin-bottom: 1rem;
+
+    &:focus {
+        border-color: $primary-red;
+    }
+}
+
+// Footer
+.footer {
+    background-color: $text-charcoal;
+    color: $white;
+    padding: 4rem 5%;
+    text-align: center;
+    p {
+        opacity: 0.6;
+        font-size: 0.9rem;
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        .hero-text h1 { font-size: 2.5rem; }
+    }
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
