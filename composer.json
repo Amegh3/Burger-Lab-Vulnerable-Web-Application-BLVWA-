@@ -1,0 +1,7 @@
+{
+    "name": "amegh3/blvwa",
+    "description": "Burger Lab Vulnerable Web Application",
+    "require": {
+        "php": ">=8.1"
+    }
+}
