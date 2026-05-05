@@ -2,11 +2,10 @@
 <section class="hero">
     <div class="hero-text">
         <div
-            style="background: rgba(230, 57, 70, 0.1); color: #E63946; display: inline-block; padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; font-size: 0.8rem; margin-bottom: 1.5rem;">
-            ✨ NOW OPEN IN THIRUVANANTHAPURAM</div>
-        <h1>Authentic <span>Coastal</span> Burger Labs.</h1>
-        <p>Savour the rich aromas & flavours of our signature Zinger burgers and Coastal-Konkani inspired sides. Fresh,
-            juicy, and bold.</p>
+            style="background: rgba(230, 57, 70, 0.1); color: #E63946; display: inline-block; padding: 0.5rem 1.2rem; border-radius: 50px; font-weight: 700; font-size: 0.8rem; margin-bottom: 1.5rem;">
+            <i class="fa-solid fa-gopuram" style="margin-right: 8px; color: #E63946;"></i> Now in Thiruvananthapuram</div>
+        <h1>This Is What <span>Craving</span> Looks Like.</h1>
+        <p>Crafted with precision, layered with premium ingredients, and built for bold flavor in every bite.</p>
         <div style="display: flex; gap: 1rem;">
             <a href="/menu" class="btn-primary">Order Now</a>
             <a href="/booking" class="btn-primary"

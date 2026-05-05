@@ -200,10 +200,11 @@
             style="border-left: none; padding-left: 0; margin-bottom: 100px; text-align: center;">
             <h1
                 style="font-family: 'Outfit', sans-serif; font-size: 5rem; line-height: 0.95; color: #0f172a; margin-bottom: 30px;">
-                Burger Labs <br>
+                🍔 Burger Lab Vulnerable Web Application (BLVWA)<br>
                 <span
-                    style="background: linear-gradient(90deg, #E63946, #D62828); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Legal
-                    Disclaimer</span>
+                    style="background: linear-gradient(90deg, #E63946, #D62828); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Powerd
+                    BY
+                    Hgema Exploit</span>
             </h1>
 
             <p

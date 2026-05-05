@@ -190,6 +190,7 @@
                     <a href="/track" class="nav-shortcut">Track</a>
                     <a href="/careers" class="nav-shortcut">Careers</a>
                     <a href="/help" class="nav-shortcut">Help</a>
+                    <a href="/legal-disclaimer" class="nav-shortcut" style="color: #E63946;">Vulnerabilities</a>
                 </div>
 
                 <div
@@ -222,15 +223,15 @@
         <?php require __DIR__ . '/' . $view . '.php'; ?>
     </main>
 
-    <!-- Premium Footer - Cleaned Up as requested -->
+    <!-- Cleaned Rebranded Footer -->
     <?php if ($view === 'dashboard/home'): ?>
-    <footer class="premium-footer">
+    <footer class="premium-footer" style="background: #1A1A1A; color: white; padding: 4rem 8% 2rem; position: relative; overflow: hidden;">
         <i class="fa fa-hamburger burger-icon-decorative"></i>
         <div style="max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 5rem;">
             <div>
-                <div class="footer-logo-text" style="font-size: 2.2rem; background: none; -webkit-text-fill-color: white;">Burger Labs</div>
-                <p style="color: #888; line-height: 2; font-size: 1.1rem; margin-bottom: 2.5rem; max-width: 400px;">
-                    Pioneering the intersection of molecular gastronomy and artisanal comfort food. Our labs are dedicated to the perfect bite.
+                <div class="footer-logo-text" style="font-size: 2.2rem; background: none; -webkit-text-fill-color: white; margin-bottom: 1.5rem; font-family: 'Outfit', sans-serif; font-weight: 800;">Burger Labs</div>
+                <p style="color: #888; line-height: 1.8; font-size: 1rem; margin-bottom: 2rem; max-width: 400px; font-weight: 400;">
+                    We don’t just make burgers we engineer them. Every ingredient is selected, every layer is balanced, and every bite is designed to deliver perfection
                 </p>
                 <div style="display: flex; gap: 1.2rem;">
                     <a href="https://www.linkedin.com/in/ameghayiratt/" target="_blank" class="footer-social-circle"><i class="fab fa-linkedin"></i></a>
@@ -248,7 +249,7 @@
 
             <div>
                 <h4 class="outfit-font" style="color: #E63946; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem;">Legal</h4>
-                <a href="/legal-disclaimer" class="footer-link" style="color: white; font-weight: 700;">Disclaimer</a>
+                <a href="/legal-disclaimer" class="footer-link" style="color: white; font-weight: 700;">Vulnerabilities</a>
                 <a href="/privacy" class="footer-link">Privacy Policy</a>
                 <a href="/refund-policy" class="footer-link">Refund Policy</a>
             </div>
@@ -261,29 +262,10 @@
                     <button type="submit" style="background: #E63946; color: white; border: none; padding: 1rem; border-radius: 15px; font-weight: 800; cursor: pointer; transition: 0.3s;">SIGN UP</button>
                 </form>
             </div>
-            <script>
-                document.getElementById('newsletter-form').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const container = document.getElementById('newsletter-container');
-                    container.style.opacity = '0';
-                    setTimeout(() => {
-                        container.innerHTML = `
-                            <div style="text-align: center; padding: 1rem;">
-                                <div style="width: 60px; height: 60px; background: #2ecc71; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; animation: scaleIn 0.4s ease;">
-                                    <i class="fa fa-check" style="color: white; font-size: 1.5rem;"></i>
-                                </div>
-                                <h4 class="outfit-font" style="color: white; font-size: 1.2rem; margin-bottom: 0.5rem;">Welcome to the Lab!</h4>
-                                <p style="color: #888; font-size: 0.85rem;">Successfully subscribed. You'll receive our next research update soon.</p>
-                            </div>
-                        `;
-                        container.style.opacity = '1';
-                    }, 300);
-                });
-            </script>
         </div>
         
-        <div style="margin-top: 6rem; border-top: 1px solid #333; padding-top: 3rem; text-align: center; color: #555; font-size: 0.9rem;">
-            <p>&copy; 2026 Burger Labs .Powered by hgema exploit</p>
+        <div style="margin-top: 4rem; border-top: 1px solid #333; padding-top: 2rem; text-align: center; color: #555; font-size: 0.9rem;">
+            <p>&copy; 2026 Burger Lab Vulnerable Web Application (BLVWA). Powered BY Hgema Exploit</p>
         </div>
     </footer>
     <?php endif; ?>
