@@ -11,8 +11,7 @@
             </div>
         </div>
 
-        <h2 style="font-size: 2rem; color: #2B2D42; margin-bottom: 0.5rem; font-weight: 800;">Welcome Back</h2>
-        <p style="color: #888; font-size: 0.95rem; margin-bottom: 3rem;">Enter your credentials to access the Lab.</p>
+        <h2 style="font-size: 2.2rem; color: #2B2D42; margin-bottom: 3rem; font-weight: 800; font-family: 'Outfit', sans-serif;">Burger Labs</h2>
 
         <?php if (isset($error)): ?>
             <div
