@@ -131,7 +131,7 @@
     <span style="font-family: 'Space Mono', monospace; color: #E63946; font-weight: 700; letter-spacing: 3px;">RESEARCH_DATABASE_QUERY</span>
     <h1 style="font-family: 'Outfit', sans-serif; font-size: 3.5rem; color: #0f172a; margin-top: 15px;">Search Results</h1>
     <p style="color: #64748b; font-size: 1.2rem; margin-top: 10px;">
-        Showing <?= count($products) ?> matches for "<span style="color: #E63946; font-weight: 700;"><?= htmlspecialchars($query) ?></span>"
+        Showing <?= count($products) ?> matches for "<span style="color: #E63946; font-weight: 700;"><?= $query ?></span>"
     </p>
 
     <form action="/search" method="GET" class="search-bar-premium">
