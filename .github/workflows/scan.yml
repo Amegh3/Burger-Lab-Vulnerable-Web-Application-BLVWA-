@@ -1,0 +1,57 @@
+name: BLVWA Vulnerability Scan
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  scan:
+    name: Automated Vulnerability Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r scanner/requirements.txt
+          playwright install chromium
+
+      - name: Wait for Render Deploy
+        run: sleep 120
+
+      - name: Run Crawler
+        run: python scanner/run.py crawl
+
+      - name: Run Vulnerability Scan
+        run: python scanner/run.py scan
+
+      - name: Run Attack Chains
+        run: python scanner/run.py chains
+
+      - name: Capture Screenshots
+        run: python scanner/run.py screenshots
+        continue-on-error: true
+
+      - name: Upload Evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: blvwa-scan-results
+          path: |
+            scanner/evidence/
+            scanner/reports/
+          retention-days: 30
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: blvwa-html-report
+          path: scanner/reports/*.html
+          retention-days: 30

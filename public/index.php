@@ -20,6 +20,7 @@ require_once __DIR__ . '/../app/controllers/WalletController.php';
 require_once __DIR__ . '/../app/controllers/CouponController.php';
 require_once __DIR__ . '/../app/controllers/StaffController.php';
 require_once __DIR__ . '/../app/controllers/NotificationController.php';
+require_once __DIR__ . '/../app/controllers/VulnerabilityLabController.php';
 
 $appConfig = require __DIR__ . '/../config/app.php';
 
