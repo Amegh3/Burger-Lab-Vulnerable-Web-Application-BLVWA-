@@ -1,0 +1,21 @@
+# Burger Labs - Web Crawlers Configuration
+# VULNERABILITY: Reveals hidden admin paths and backup locations
+
+User-agent: *
+Disallow: /admin_p0rtal_secret_path
+Disallow: /admin/diagnostics
+Disallow: /admin/users
+Disallow: /admin/logs
+Disallow: /admin/export
+Disallow: /admin/backup
+Disallow: /staff/dashboard
+Disallow: /staff/inventory
+Disallow: /staff/refunds
+Disallow: /storage/backups/
+Disallow: /uploads/
+Disallow: /api/v2/
+Disallow: /.env
+Disallow: /.git/
+
+# Sitemap
+Sitemap: https://burger-lab-vulnerable-web-application.onrender.com/sitemap.xml

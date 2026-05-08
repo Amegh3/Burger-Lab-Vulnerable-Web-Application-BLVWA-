@@ -4,11 +4,18 @@ namespace App\Controllers;
 
 class Controller {
     public function __construct() {
-        // Enforce login for all pages except the login and register routes
+        // Enforce login for all pages except auth routes and APIs
         $current_uri = $_SERVER['REQUEST_URI'];
-        $is_auth_route = (strpos($current_uri, '/login') !== false || strpos($current_uri, '/register') !== false);
+        $public_routes = ['/login', '/register', '/api/', '/phpinfo', '/.env', '/robots.txt'];
+        $is_public = false;
+        foreach ($public_routes as $route) {
+            if (strpos($current_uri, $route) !== false) {
+                $is_public = true;
+                break;
+            }
+        }
         
-        if (!$is_auth_route && !isset($_SESSION['user'])) {
+        if (!$is_public && !isset($_SESSION['user'])) {
             header('Location: /login');
             exit;
         }

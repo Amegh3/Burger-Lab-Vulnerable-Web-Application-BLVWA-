@@ -69,7 +69,7 @@
             <div style="padding: 3rem; background: #fff5f6; border-radius: 25px; border: 1px solid #ffccd0;">
                 <i class="fa fa-search" style="font-size: 2rem; color: #E63946; margin-bottom: 1rem;"></i>
                 <h3 style="color: #E63946;">Order Not Found</h3>
-                <p style="color: #888; margin-top: 1rem;">We couldn't find any order with ID "<?= htmlspecialchars($order_id) ?>". Please check the ID and try again.</p>
+                <p style="color: #888; margin-top: 1rem;">We couldn't find any order with ID "<?= $order_id ?>". Please check the ID and try again.</p>
             </div>
         <?php else: ?>
             <div style="padding: 2rem; color: #888;">

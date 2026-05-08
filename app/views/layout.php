@@ -188,9 +188,9 @@
                     <a href="/" class="nav-shortcut">Home</a>
                     <a href="/menu" class="nav-shortcut">Menu</a>
                     <a href="/track" class="nav-shortcut">Track</a>
-                    <a href="/careers" class="nav-shortcut">Careers</a>
+                    <a href="/wallet" class="nav-shortcut">Wallet</a>
+                    <a href="/coupons" class="nav-shortcut">Coupons</a>
                     <a href="/help" class="nav-shortcut">Help</a>
-                    <a href="/legal-disclaimer" class="nav-shortcut" style="color: #E63946;">Vulnerabilities</a>
                 </div>
 
                 <div
@@ -211,6 +211,8 @@
                             <?= isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0 ?>
                         </span>
                     </a>
+
+                    <a href="/profile" style="color: #2B2D42; font-size: 1.2rem;" title="My Profile"><i class="fa fa-user-circle"></i></a>
 
                     <a href="/logout" style="color: #E63946; font-size: 1.2rem; margin-left: 0.5rem;"><i
                             class="fa fa-power-off"></i></a>

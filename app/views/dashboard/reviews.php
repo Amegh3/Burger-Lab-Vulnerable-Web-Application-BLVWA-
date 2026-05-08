@@ -25,7 +25,23 @@
         </form>
     </div>
 
-    <!-- Review List -->
+    <!-- User-Submitted Reviews (STORED XSS — rendered raw) -->
+    <?php if (!empty($reviews)): ?>
+        <?php foreach (array_reverse($reviews) as $r): ?>
+            <div style="background: white; padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border-left: 5px solid #E63946;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <!-- VULNERABILITY: Stored XSS — name rendered raw -->
+                    <strong><?= $r['name'] ?></strong>
+                    <span style="color: #F4A261;"><?= str_repeat('★', (int)$r['rating']) ?></span>
+                </div>
+                <!-- VULNERABILITY: Stored XSS — comment rendered raw -->
+                <p style="color: #666; font-size: 0.95rem;"><?= $r['comment'] ?></p>
+                <span style="font-size: 0.75rem; color: #aaa;"><?= $r['date'] ?></span>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <!-- Static Reviews -->
     <div id="reviews-list">
         <div style="background: white; padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem; border-left: 5px solid #F4A261;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
@@ -40,7 +56,6 @@
                 <strong>Trinity</strong>
                 <span style="color: #F4A261;">★★★★★</span>
             </div>
-            <!-- VULNERABILITY: This would be where stored XSS executes -->
             <p style="color: #666; font-size: 0.95rem;">I followed the white rabbit and it led me to the best burger in the city.</p>
         </div>
     </div>

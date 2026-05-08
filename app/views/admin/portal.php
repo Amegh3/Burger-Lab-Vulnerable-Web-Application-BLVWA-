@@ -81,23 +81,35 @@
                 <p>Verify server connectivity and latency via institutional ping protocols. Includes OS-level integration tests.</p>
             </a>
 
-            <div class="module-card" style="opacity: 0.5; cursor: not-allowed;">
+            <a href="/admin/logs" class="module-card">
                 <i class="fas fa-file-invoice"></i>
-                <h3>Log Analytics</h3>
-                <p>Access raw server logs and transaction history. (Module currently under maintenance)</p>
-            </div>
+                <h3>System Logs</h3>
+                <p>Access raw server logs, audit trails, and transaction history. Supports custom log file paths.</p>
+            </a>
             
-            <div class="module-card" style="opacity: 0.5; cursor: not-allowed;">
+            <a href="/admin/users" class="module-card">
                 <i class="fas fa-user-shield"></i>
-                <h3>User Integrity</h3>
-                <p>Audit user accounts and privilege levels. (Module currently under maintenance)</p>
-            </div>
+                <h3>User Management</h3>
+                <p>Audit user accounts, privilege levels, and credential integrity across the platform.</p>
+            </a>
 
-            <div class="module-card" style="opacity: 0.5; cursor: not-allowed;">
+            <a href="/admin/export" class="module-card">
+                <i class="fas fa-file-export"></i>
+                <h3>Data Export</h3>
+                <p>Import XML data and generate custom reports. Supports external entity resolution.</p>
+            </a>
+
+            <a href="/admin/backup" class="module-card">
                 <i class="fas fa-database"></i>
-                <h3>Database Ops</h3>
-                <p>Direct SQL console for authorized data scientists. (Module currently under maintenance)</p>
-            </div>
+                <h3>System Backups</h3>
+                <p>View and download database dumps and full system backup archives.</p>
+            </a>
+
+            <a href="/admin/analytics" class="module-card">
+                <i class="fas fa-chart-bar"></i>
+                <h3>Analytics Engine</h3>
+                <p>Generate dynamic reports using our template engine with custom expressions.</p>
+            </a>
         </div>
     </div>
 </div>
