@@ -190,7 +190,9 @@
                     <a href="/track" class="nav-shortcut">Track</a>
                     <a href="/wallet" class="nav-shortcut">Wallet</a>
                     <a href="/coupons" class="nav-shortcut">Coupons</a>
+                    <a href="/careers" class="nav-shortcut">Careers</a>
                     <a href="/help" class="nav-shortcut">Help</a>
+                    <a href="/legal-disclaimer" class="nav-shortcut" style="color: #E63946;">Vulnerabilities</a>
                 </div>
 
                 <div
