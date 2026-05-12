@@ -1,7 +1,0 @@
-httpx[http2]
-playwright
-beautifulsoup4
-rich
-jinja2
-aiofiles
-Pillow
