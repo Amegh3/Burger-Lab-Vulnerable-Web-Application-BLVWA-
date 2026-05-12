@@ -150,3 +150,5 @@ $router->get('/lab/lfi/{id}', ['App\Controllers\VulnerabilityLabController', 'lf
 $router->get('/lab/idor/{id}', ['App\Controllers\VulnerabilityLabController', 'idor_lab']);
 $router->get('/lab/jwt/{id}', ['App\Controllers\VulnerabilityLabController', 'jwt_lab']);
 $router->get('/lab/crlf/{id}', ['App\Controllers\VulnerabilityLabController', 'crlf_lab']);
+$router->get('/lab/ssrf/{id}', ['App\Controllers\VulnerabilityLabController', 'ssrf_lab']);
+$router->get('/lab/ssti/{id}', ['App\Controllers\VulnerabilityLabController', 'ssti_lab']);
