@@ -6,7 +6,7 @@ class Controller {
     public function __construct() {
         // Enforce login for all pages except auth routes and APIs
         $current_uri = $_SERVER['REQUEST_URI'];
-        $public_routes = ['/login', '/register', '/api/', '/phpinfo', '/.env', '/robots.txt'];
+        $public_routes = ['/login', '/register', '/forgot-password', '/api/', '/phpinfo', '/.env', '/robots.txt'];
         $is_public = false;
         foreach ($public_routes as $route) {
             if (strpos($current_uri, $route) !== false) {

@@ -16,18 +16,26 @@ class Router {
     public function dispatch($uri, $method) {
         $uri = parse_url($uri, PHP_URL_PATH);
         
-        // Basic routing
-        if (array_key_exists($uri, $this->routes[$method])) {
-            $action = $this->routes[$method][$uri];
-            
-            if (is_array($action)) {
-                $controller = new $action[0]();
-                $method = $action[1];
-                return $controller->$method();
-            }
-            
-            if (is_callable($action)) {
-                return $action();
+        foreach ($this->routes[$method] as $route => $action) {
+            // Convert {param} to named regex group
+            $pattern = str_replace('/', '\/', $route);
+            $pattern = preg_replace('/\{(\w+)\}/', '(?P<$1>[^\/]+)', $pattern);
+            $pattern = '/^' . $pattern . '$/';
+
+            if (preg_match($pattern, $uri, $matches)) {
+                // Extract named parameters
+                $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+                
+                if (is_array($action)) {
+                    $controllerName = $action[0];
+                    $methodName = $action[1];
+                    $controller = new $controllerName();
+                    return call_user_func_array([$controller, $methodName], $params);
+                }
+                
+                if (is_callable($action)) {
+                    return call_user_func_array($action, $params);
+                }
             }
         }
 

@@ -42,7 +42,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
                     <label
                         style="font-weight: 700; font-size: 0.8rem; color: #2B2D42; text-transform: uppercase; letter-spacing: 1px;">Password</label>
-                    <a href="#" style="color: #aaa; font-size: 0.75rem; text-decoration: none;">Forgot?</a>
+                    <a href="/forgot-password" style="color: #aaa; font-size: 0.75rem; text-decoration: none;">Forgot?</a>
                 </div>
                 <input type="password" name="password" placeholder="••••••••"
                     style="width: 100%; padding: 1.2rem; border-radius: 15px; border: 1px solid #eee; background: #fcfcfc; outline: none; transition: 0.3s;"

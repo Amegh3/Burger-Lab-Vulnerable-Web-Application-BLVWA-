@@ -149,3 +149,4 @@ $router->get('/lab/xss/{id}', ['App\Controllers\VulnerabilityLabController', 'xs
 $router->get('/lab/lfi/{id}', ['App\Controllers\VulnerabilityLabController', 'lfi_lab']);
 $router->get('/lab/idor/{id}', ['App\Controllers\VulnerabilityLabController', 'idor_lab']);
 $router->get('/lab/jwt/{id}', ['App\Controllers\VulnerabilityLabController', 'jwt_lab']);
+$router->get('/lab/crlf/{id}', ['App\Controllers\VulnerabilityLabController', 'crlf_lab']);

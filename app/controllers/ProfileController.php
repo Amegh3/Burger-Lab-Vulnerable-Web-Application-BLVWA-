@@ -66,4 +66,25 @@ class ProfileController extends Controller {
             'user' => $_SESSION['user'] ?? []
         ], 'layout');
     }
+
+    // --- SIMULATED WP-JSON USER ENUMERATION ---
+    public function apiWordPressUsers() {
+        $db = Database::getInstance()->getConnection();
+        $users = $db->query("SELECT id, username, email FROM users")->fetchAll();
+        
+        $wpUsers = [];
+        foreach ($users as $user) {
+            $wpUsers[] = [
+                'id' => $user['id'],
+                'name' => $user['username'],
+                'slug' => strtolower($user['username']),
+                'link' => "http://127.0.0.1:8000/author/" . strtolower($user['username']),
+                'description' => "Vulnerable Lab User",
+            ];
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode($wpUsers);
+        exit;
+    }
 }

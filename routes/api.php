@@ -35,3 +35,6 @@ $router->post('/api/v1/coupons/validate', [CouponController::class, 'apiValidate
 // User API (Excessive Data Exposure — returns password_hash, api_key)
 $router->get('/api/v1/users/{id}', [ProfileController::class, 'show']);
 
+// Simulated WordPress JSON API
+$router->get('/wp-json/wp/v2/users', [ProfileController::class, 'apiWordPressUsers']);
+
