@@ -77,6 +77,8 @@ $router->get('/login', [AuthController::class, 'loginForm']);
 $router->post('/login', [AuthController::class, 'login']);
 $router->get('/register', [AuthController::class, 'registerForm']);
 $router->post('/register', [AuthController::class, 'register']);
+$router->get('/forgot-password', [AuthController::class, 'forgotPasswordForm']);
+$router->post('/forgot-password', [AuthController::class, 'forgotPassword']);
 $router->get('/logout', [AuthController::class, 'logout']);
 
 // ═══════════════════════════════════════════════
@@ -133,3 +135,17 @@ $router->get('/staff/inventory', [StaffController::class, 'inventory']);
 $router->post('/staff/inventory/update', [StaffController::class, 'updateStock']);
 $router->get('/staff/refunds', [StaffController::class, 'refunds']);
 $router->post('/staff/refunds/process', [StaffController::class, 'processRefund']);
+
+// ═══════════════════════════════════════════════
+//  VULNERABILITY LABS (105+ ENDPOINTS)
+// ═══════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════
+//  VULNERABILITY LABS (105+ ENDPOINTS)
+// ═══════════════════════════════════════════════
+$router->get('/lab/rce/{id}', ['App\Controllers\VulnerabilityLabController', 'rce_lab']);
+$router->get('/lab/sqli/{id}', ['App\Controllers\VulnerabilityLabController', 'sqli_lab']);
+$router->get('/lab/xss/{id}', ['App\Controllers\VulnerabilityLabController', 'xss_lab']);
+$router->get('/lab/lfi/{id}', ['App\Controllers\VulnerabilityLabController', 'lfi_lab']);
+$router->get('/lab/idor/{id}', ['App\Controllers\VulnerabilityLabController', 'idor_lab']);
+$router->get('/lab/jwt/{id}', ['App\Controllers\VulnerabilityLabController', 'jwt_lab']);

