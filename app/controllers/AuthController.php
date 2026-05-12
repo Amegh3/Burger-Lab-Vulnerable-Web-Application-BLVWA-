@@ -61,4 +61,26 @@ class AuthController extends Controller {
         header('Location: /');
         exit;
     }
+
+    // ─── FORGOT PASSWORD: VULNERABILITY — Host Header Injection ───
+    // Generates a reset link using the Host header without validation.
+    public function forgotPasswordForm() {
+        $this->view('auth/forgot', [], 'layout');
+    }
+
+    public function forgotPassword() {
+        $email = $_POST['email'] ?? '';
+        
+        // VULNERABILITY: Host Header Injection via X-Forwarded-Host
+        // The application blindly trusts the X-Forwarded-Host header (common behind proxies like Render).
+        $host = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['HTTP_HOST'] ?? 'localhost:8000';
+        $resetToken = bin2hex(random_bytes(16));
+        $resetLink = "http://" . $host . "/reset-password?token=" . $resetToken;
+        
+        // In a real app, this would be emailed. Here we display it for training.
+        $this->view('auth/forgot_success', [
+            'email' => $email,
+            'reset_link' => $resetLink
+        ], 'layout');
+    }
 }

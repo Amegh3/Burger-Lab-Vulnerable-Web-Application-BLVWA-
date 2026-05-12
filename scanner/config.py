@@ -1,7 +1,7 @@
 # scanner/config.py
 """Global configuration for the BLVWA Scanner."""
 
-TARGET_URL = "https://burger-lab-vulnerable-web-application-tnvx.onrender.com"
+TARGET_URL = "http://127.0.0.1:8000"
 
 # Auth credentials (SQLi bypass + normal)
 CREDENTIALS = {
