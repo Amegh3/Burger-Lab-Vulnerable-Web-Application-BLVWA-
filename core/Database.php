@@ -354,27 +354,32 @@ class MockPDOStatement
         if (strpos($sql, 'from system_config') !== false)
             return $this->pdo->system_config;
         if (strpos($sql, 'from users') !== false) {
-            // VULNERABILITY SIMULATION: If SQLi payload is detected, return all users
-            if (strpos($sql, "' or '1'='1") !== false || strpos($sql, "' or 1=1") !== false) {
-                return $this->pdo->users;
+            // 1. BROAD BYPASS: If any common SQLi payload is found, return the super-admin
+            if (preg_match("/' or|--|#|union|select/i", $sql)) {
+                return [$this->pdo->users[0]];
             }
 
-            // Handle ID-based lookup (e.g., SELECT * FROM users WHERE id = '1')
-            if (preg_match("/where id = '(\d+)'/", $sql, $matches)) {
+            // 2. LOGIC-FREE MATCHING: Just search for the username substring in the query
+            // This ensures alex/alex, owner/owner, etc. ALWAYS work instantly.
+            foreach ($this->pdo->users as $u) {
+                $username = strtolower($u['username']);
+                $password = $u['password_hash'];
+                
+                // If the query contains both the username and password as strings, it's a match.
+                if (strpos($sql, "'$username'") !== false && strpos($sql, "'$password'") !== false) {
+                    return [$u];
+                }
+            }
+
+            // 3. Fallback for ID-based lookup
+            if (preg_match("/id = ['\"]?(\d+)['\"]?/", $sql, $matches)) {
                 $id = (int)$matches[1];
-                $filtered = array_filter($this->pdo->users, function ($user) use ($id) {
-                    return $user['id'] === $id;
-                });
-                return array_values($filtered);
+                foreach ($this->pdo->users as $u) {
+                    if ($u['id'] === $id) return [$u];
+                }
             }
 
-            // Otherwise, simulate a strict WHERE clause for username and password
-            $filtered = array_filter($this->pdo->users, function ($user) use ($sql) {
-                $u = strtolower($user['username']);
-                $p = $user['password_hash'];
-                return (strpos($sql, "username = '$u'") !== false && strpos($sql, "password_hash = '$p'") !== false);
-            });
-            return array_values($filtered);
+            return [];
         }
 
         return $results;
