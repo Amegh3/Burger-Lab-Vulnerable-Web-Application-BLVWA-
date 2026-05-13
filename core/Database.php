@@ -90,7 +90,7 @@ class MockPDO
             'email' => 'abhinand@burgerlabs.htb', 
             'role' => 'staff', 
             'wallet_balance' => 18000.00,
-            'avatar' => '/assets/images/manager_avatar.png',
+            'avatar' => '/assets/images/face3.png',
             'member_since' => 'Jun 2024',
             'permissions' => ['Staff Scheduling', 'POS Access', 'Daily Reports'],
             'status' => 'Active • Store Manager'
@@ -145,7 +145,7 @@ class MockPDO
             'address' => 'Pattom, Trivandrum', 
             'salary_history' => [60000, 65000], 
             'private_notes' => 'Manages operations and staff shifts.',
-            'avatar' => '/assets/images/manager_avatar.png',
+            'avatar' => '/assets/images/face3.png',
             'permissions' => ['Staff Scheduling', 'POS Access', 'Daily Reports']
         ],
         [
