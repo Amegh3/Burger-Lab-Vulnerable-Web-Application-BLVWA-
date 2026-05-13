@@ -36,13 +36,19 @@ class WalletController extends Controller {
 
     public function verifyPayment() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // VULNERABILITY: Blindly trusting the 'paid_amount' from the client-side POST.
-            // A user can change the hidden field 'paid_amount' to a massive value,
-            // or even use a negative value if the logic is flawed.
+            // VULNERABILITY: The 'gateway_signature' is used to verify the payment.
+            // However, the signature is just an MD5 hash of the amount!
+            // A "normal" user will fail because the gateway doesn't provide a signature.
+            // An "attacker" will calculate md5(amount) and bypass the payment.
+            
             $paidAmount = (float)($_POST['paid_amount'] ?? 0);
             $status = $_POST['status'] ?? 'failed';
+            $signature = $_POST['gateway_signature'] ?? '';
 
-            if ($status === 'success') {
+            // The " Artisanal Secret" is actually just the amount itself.
+            $expectedSignature = md5($paidAmount);
+
+            if ($status === 'success' && $signature === $expectedSignature) {
                 $_SESSION['user']['wallet_balance'] = 
                     ($_SESSION['user']['wallet_balance'] ?? 50.00) + $paidAmount;
 
@@ -51,10 +57,15 @@ class WalletController extends Controller {
                     'type'   => 'topup',
                     'amount' => $paidAmount,
                     'date'   => date('M d, H:i'),
-                    'note'   => 'Artisanal Lab Top-up (Verified)'
+                    'note'   => 'Secure Gateway Top-up (Verified via Signature)'
                 ];
                 
-                header('Location: /wallet?success=Payment+Verified');
+                header('Location: /wallet?success=Payment+Verified+via+Signature');
+                exit;
+            } else {
+                // Default state: Always fail for non-exploiters
+                $reason = ($signature !== $expectedSignature) ? "Invalid Gateway Signature" : "Transaction Refused";
+                header('Location: /wallet?error=' . urlencode($reason));
                 exit;
             }
         }

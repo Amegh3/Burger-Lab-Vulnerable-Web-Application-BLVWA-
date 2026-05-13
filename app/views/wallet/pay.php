@@ -30,13 +30,19 @@
             By clicking "Verify & Complete", you simulate a successful handshake with the bank. In a vulnerable lab, this handshake is blindly trusted.
         </p>
 
-        <!-- VULNERABILITY: This form contains the 'paid_amount' as a hidden field. 
-             Attacker can intercept this request and change 'paid_amount' to any value. -->
+        <!-- VULNERABILITY: This form requires a 'gateway_signature' to succeed.
+             Normal users get 'PENDING_SIG', which fails on the server.
+             Attacker must realize the signature is just md5(paid_amount). -->
         <form action="/wallet/verify-payment" method="POST">
             <input type="hidden" name="paid_amount" value="<?= $amount ?>">
             <input type="hidden" name="status" value="success">
             <input type="hidden" name="plan_id" value="<?= htmlspecialchars($plan) ?>">
+            <input type="hidden" name="gateway_signature" value="PENDING_VERIFICATION_BY_BANK_CORE">
             
+            <p style="background: #FFF5F5; color: #E63946; padding: 1rem; border-radius: 12px; font-size: 0.85rem; margin-bottom: 1.5rem; border: 1px solid #FFDADA;">
+                <i class="fa fa-info-circle"></i> <strong>Note:</strong> Standard top-ups are currently disabled for security. Gateway Signature is required for verification.
+            </p>
+
             <button type="submit" style="width: 100%; background: #2B2D42; color: white; border: none; padding: 1.2rem; border-radius: 18px; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: 0.3s; box-shadow: 0 15px 35px rgba(43, 45, 66, 0.2);" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
                 VERIFY & COMPLETE PAYMENT
             </button>
