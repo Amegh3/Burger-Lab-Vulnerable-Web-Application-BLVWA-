@@ -24,7 +24,7 @@
                 <?= htmlspecialchars($reset_link) ?>
             </div>
             <p style="margin-top: 1.5rem; font-size: 0.8rem; color: #888; line-height: 1.6;">
-                <strong>VAPT Insight:</strong> Notice how the link's domain matches the <code>Host</code> header of your request. This allows for <strong>Host Header Injection</strong>.
+                <strong>VAPT Insight:</strong> Carefully analyze the generated link structure. Notice how the domain and port respond to variations in your request headers.
             </p>
         </div>
 
