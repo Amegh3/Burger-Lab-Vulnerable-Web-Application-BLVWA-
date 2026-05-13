@@ -203,7 +203,9 @@ class MockPDO
 
     public function query($sql)
     {
-        return new MockPDOStatement($this, $sql);
+        $stmt = new MockPDOStatement($this, $sql);
+        $stmt->execute();
+        return $stmt;
     }
 
     public function prepare($sql)
@@ -227,6 +229,39 @@ class MockPDOStatement
     public function execute($params = [])
     {
         $this->params = $params;
+        $sql = trim(strtolower($this->sql));
+
+        // SIMULATE PERSISTENCE: Handle UPDATE users SET ...
+        if (strpos($sql, 'update users') !== false) {
+            // Extract ID
+            if (preg_match("/where id = ['\"]?(\d+)['\"]?/i", $this->sql, $matches)) {
+                $userId = (int)$matches[1];
+                
+                // Find user in mock DB
+                $userIndex = -1;
+                foreach ($this->pdo->users as $idx => $u) {
+                    if ($u['id'] === $userId) {
+                        $userIndex = $idx;
+                        break;
+                    }
+                }
+
+                if ($userIndex !== -1) {
+                    // Extract fields being updated
+                    // Matches pattern like avatar = '/uploads/dhoni.png'
+                    if (preg_match_all("/([a-z0-9_]+) = ['\"]([^'\"]*)['\"]/i", $this->sql, $matches, PREG_SET_ORDER)) {
+                        foreach ($matches as $match) {
+                            $field = $match[1];
+                            $value = $match[2];
+                            if ($field !== 'where' && $field !== 'id') {
+                                $this->pdo->users[$userIndex][$field] = $value;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return true;
     }
 
