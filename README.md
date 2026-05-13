@@ -1,9 +1,34 @@
 🍔 Burger Lab Vulnerable Web Application (BLVWA)
 
-Welcome to **Burger Labs**, a production-grade, high-fidelity e-commerce platform designed exclusively for **Cybersecurity Research and Penetration Testing**. This platform contains **100+ intentional vulnerabilities** scattered across its molecularly-inspired architecture.
+**Cook. Break. Exploit.**  
+A premium, highly intentional vulnerable web application designed for security professionals and penetration testing enthusiasts. Featuring 105+ unique security flaws across a modern, artisanal burger-themed platform.
 
-## Mission
-Burger Labs is built for security testing to provide a realistic, professional target for students and security professionals. It simulates a modern web application with a complex multi-step checkout, persistent wallet system, and interactive dashboard, while maintaining deep-seated security flaws.
+---
+
+## 🚀 Quick Start (Local Deployment)
+
+### 🐋 Option 1: Docker (Recommended)
+Deploy the entire lab in seconds using Docker Compose. This ensures all dependencies and configurations are perfectly matched.
+
+```bash
+# Clone the repository
+git clone https://github.com/Amegh3/Burger-Lab-Vulnerable-Web-Application-BLVWA-.git
+
+# Navigate to the project
+cd Burger-Lab-Vulnerable-Web-Application-BLVWA-
+
+# Fire up the containers
+docker-compose up --build -d
+```
+🔗 **Access the Lab**: [http://localhost:8000](http://localhost:8000)
+
+### 🛠️ Option 2: PHP Native Server
+For those without Docker, use our automated startup script which handles database initialization and local server provisioning.
+
+```bash
+bash start_lab.sh
+```
+🔗 **Access the Lab**: [http://localhost:8000](http://localhost:8000)
 
 ---
 
