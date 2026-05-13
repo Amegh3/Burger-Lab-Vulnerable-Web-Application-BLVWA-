@@ -2,36 +2,74 @@
 // core/Database.php
 namespace Core;
 
-class Database {
+class Database
+{
     private static $instance = null;
     private $connection;
 
-    private function __construct() {
+    private function __construct()
+    {
         $this->connection = new MockPDO();
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new Database();
         }
         return self::$instance;
     }
 
-    public function getConnection() {
+    public function getConnection()
+    {
         return $this->connection;
     }
 }
 
-class MockPDO {
+class MockPDO
+{
     public $orders = [
         ['id' => 1001, 'user_id' => 2, 'burger_name' => 'Signature Zinger', 'status' => 'Out for Delivery', 'total_price' => 299, 'notes' => 'Extra spicy', 'created_at' => '2026-05-05 08:30:00'],
         ['id' => 1002, 'user_id' => 2, 'burger_name' => 'Loaded Truffle Fries', 'status' => 'Preparing', 'total_price' => 199, 'notes' => 'No onions', 'created_at' => '2026-05-05 11:15:00']
     ];
-    
+
     public $users = [
-        ['id' => 1, 'username' => 'admin', 'password_hash' => 'admin_lab_pass_2026', 'email' => 'admin@burgerlabs.htb', 'role' => 'admin', 'wallet_balance' => 99999.00],
-        ['id' => 2, 'username' => 'guest', 'password_hash' => 'guest', 'email' => 'guest@example.com', 'role' => 'customer', 'wallet_balance' => 5000.00],
-        ['id' => 3, 'username' => 'owner', 'password_hash' => 'owner', 'email' => 'founder@burgerlabs.htb', 'role' => 'owner', 'wallet_balance' => 1500000.00]
+        [
+            'id' => 1, 
+            'username' => 'admin', 
+            'password_hash' => 'pass2026', 
+            'email' => 'admin@burgerlabs.htb', 
+            'role' => 'admin', 
+            'wallet_balance' => 99999.00,
+            'avatar' => '/assets/images/admin_avatar.png',
+            'member_since' => 'Jan 2024',
+            'permissions' => ['Full Lab Control', 'WAF Management', 'System Logs', 'User Escalation'],
+            'status' => 'Active • Systems Administrator'
+        ],
+        [
+            'id' => 2, 
+            'username' => 'guest', 
+            'password_hash' => 'guest', 
+            'email' => 'guest@example.com', 
+            'role' => 'customer', 
+            'wallet_balance' => 5000.00,
+            'avatar' => '/assets/images/customer_avatar.png',
+            'member_since' => 'May 2026',
+            'permissions' => ['Order Placement', 'Wallet Transfer', 'Support Tickets'],
+            'status' => 'Active • Valued Customer'
+        ],
+        [
+            'id' => 3, 
+            'username' => 'owner', 
+            'password_hash' => 'owner', 
+            'email' => 'founder@burgerlabs.htb', 
+            'role' => 'owner', 
+            'wallet_balance' => 1500000.00,
+            'avatar' => '/assets/images/owner_avatar.png',
+            'member_since' => 'Oct 2023',
+            'permissions' => ['Total Authority', 'Equity Access', 'Staff Payroll', 'Executive Command'],
+            'status' => 'Active • Founder & CEO'
+        ]
     ];
 
     public $employees = [
@@ -55,11 +93,11 @@ class MockPDO {
         ['id' => 4, 'name' => 'Green Matrix', 'price' => 329, 'description' => 'Beyond Meat patty, vegan cheese, avocado, and fresh sprouts.', 'category' => 'Vegan', 'image_url' => '/assets/images/vegan.png'],
         ['id' => 5, 'name' => 'Truffle Overload', 'price' => 499, 'description' => 'Double beef patty, swiss cheese, and rich black truffle mushroom sauce.', 'category' => 'Beef', 'image_url' => '/assets/images/truffle.png'],
         ['id' => 6, 'name' => 'Malabar Spicy', 'price' => 389, 'description' => 'Malabar crispy chicken, curry leaf tempura, and spicy coconut mayo.', 'category' => 'Chicken', 'image_url' => '/assets/images/malabar.png'],
-        
+
         // Sides
         ['id' => 10, 'name' => 'Loaded Truffle Fries', 'price' => 199, 'description' => 'Hand-cut fries topped with truffle oil, parmesan, and chives.', 'category' => 'Sides', 'image_url' => '/assets/images/fries.png'],
         ['id' => 11, 'name' => 'Crunchy Chicken Strips', 'price' => 249, 'description' => '6 pieces of golden-fried juicy chicken strips with honey mustard.', 'category' => 'Sides', 'image_url' => '/assets/images/zinger.png'],
-        
+
         // Drinks
         ['id' => 20, 'name' => 'Mojito', 'price' => 149, 'description' => 'Minty, zesty, and refreshing scientific blend.', 'category' => 'Drinks', 'image_url' => '/assets/images/mojito.png'],
         ['id' => 21, 'name' => 'Cyber Shake', 'price' => 199, 'description' => 'Thick chocolate shake with artisanal cocoa.', 'category' => 'Drinks', 'image_url' => '/assets/images/shake.png'],
@@ -67,34 +105,40 @@ class MockPDO {
         ['id' => 23, 'name' => 'Blueberry Fusion', 'price' => 159, 'description' => 'Electric blue lemonade infused with fresh mountain berries.', 'category' => 'Drinks', 'image_url' => 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=800']
     ];
 
-    public function query($sql) {
+    public function query($sql)
+    {
         return new MockPDOStatement($this, $sql);
     }
 
-    public function prepare($sql) {
+    public function prepare($sql)
+    {
         return new MockPDOStatement($this, $sql);
     }
 }
 
-class MockPDOStatement {
+class MockPDOStatement
+{
     private $pdo;
     private $sql;
     private $params = [];
 
-    public function __construct($pdo, $sql) {
+    public function __construct($pdo, $sql)
+    {
         $this->pdo = $pdo;
         $this->sql = $sql;
     }
 
-    public function execute($params = []) {
+    public function execute($params = [])
+    {
         $this->params = $params;
         return true;
     }
 
-    public function fetchAll() {
+    public function fetchAll()
+    {
         $results = [];
         $sql = strtolower($this->sql);
-        
+
         if (strpos($sql, 'information_schema.tables') !== false) {
             return [['table_name' => 'users'], ['table_name' => 'products'], ['table_name' => 'orders'], ['table_name' => 'employees'], ['table_name' => 'system_config']];
         }
@@ -122,29 +166,33 @@ class MockPDOStatement {
             // Check for WHERE clause with LIKE
             if (preg_match("/where name like '%(.*)%' or description like '%(.*)%'/", $sql, $matches)) {
                 $query = strtolower($matches[1]);
-                return array_values(array_filter($this->pdo->products, function($p) use ($query) {
-                    return strpos(strtolower($p['name']), $query) !== false || 
-                           strpos(strtolower($p['description']), $query) !== false;
+                return array_values(array_filter($this->pdo->products, function ($p) use ($query) {
+                    return strpos(strtolower($p['name']), $query) !== false ||
+                        strpos(strtolower($p['description']), $query) !== false;
                 }));
             }
             return $this->pdo->products;
         }
         if (strpos($sql, 'from orders') !== false) {
             if (preg_match('/bl-\d+/', $sql, $matches)) {
-                return [[
-                    'id' => strtoupper($matches[0]),
-                    'user_id' => 2,
-                    'burger_name' => 'Signature Zinger (Artisanal)',
-                    'status' => 'Preparing / Grilling',
-                    'total_price' => 339,
-                    'notes' => 'Priority Lab Prep',
-                    'created_at' => date('Y-m-d H:i:s')
-                ]];
+                return [
+                    [
+                        'id' => strtoupper($matches[0]),
+                        'user_id' => 2,
+                        'burger_name' => 'Signature Zinger (Artisanal)',
+                        'status' => 'Preparing / Grilling',
+                        'total_price' => 339,
+                        'notes' => 'Priority Lab Prep',
+                        'created_at' => date('Y-m-d H:i:s')
+                    ]
+                ];
             }
             return $this->pdo->orders;
         }
-        if (strpos($sql, 'from employees') !== false) return $this->pdo->employees;
-        if (strpos($sql, 'from system_config') !== false) return $this->pdo->system_config;
+        if (strpos($sql, 'from employees') !== false)
+            return $this->pdo->employees;
+        if (strpos($sql, 'from system_config') !== false)
+            return $this->pdo->system_config;
         if (strpos($sql, 'from users') !== false) {
             // VULNERABILITY SIMULATION: If SQLi payload is detected, return all users
             if (strpos($sql, "' or '1'='1") !== false || strpos($sql, "' or 1=1") !== false) {
@@ -152,7 +200,7 @@ class MockPDOStatement {
             }
 
             // Otherwise, simulate a strict WHERE clause for username and password
-            $filtered = array_filter($this->pdo->users, function($user) use ($sql) {
+            $filtered = array_filter($this->pdo->users, function ($user) use ($sql) {
                 $u = strtolower($user['username']);
                 $p = $user['password_hash'];
                 return (strpos($sql, "username = '$u'") !== false && strpos($sql, "password_hash = '$p'") !== false);
@@ -163,7 +211,8 @@ class MockPDOStatement {
         return $results;
     }
 
-    public function fetch() {
+    public function fetch()
+    {
         $all = $this->fetchAll();
         return $all[0] ?? false;
     }
