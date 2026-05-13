@@ -7,32 +7,50 @@ A premium, highly intentional vulnerable web application designed for security p
 
 ## 🚀 Quick Start (Local Deployment)
 
-### 🐋 Option 1: Docker (Recommended)
-Deploy the entire lab in seconds using Docker Compose. This ensures all dependencies and configurations are perfectly matched.
-
+### 🐋 Option 1: Docker (The Pro Way)
+Perfect for a standardized, clean environment. Deploy the entire lab in seconds.
 ```bash
-# Clone the repository
+# 1. Clone the Lab
 git clone https://github.com/Amegh3/Burger-Lab-Vulnerable-Web-Application-BLVWA-.git
 
-# Navigate to the project
+# 2. Navigate to Project
 cd Burger-Lab-Vulnerable-Web-Application-BLVWA-
 
-# Fire up the containers
-docker-compose up --build -d
+# 3. Launch with Automated Convenience Script
+bash docker-start.sh
 ```
-🔗 **Access the Lab**: [http://localhost:8000](http://localhost:8000)
+🔗 **Live URL**: [http://localhost:8000](http://localhost:8000)
 
-### 🛠️ Option 2: PHP Native Server
-For those without Docker, use our automated startup script which handles database initialization and local server provisioning.
-
+### 🛠️ Option 2: PHP Native Server (The Fast Way)
+If you have PHP installed locally.
 ```bash
 bash start_lab.sh
 ```
-🔗 **Access the Lab**: [http://localhost:8000](http://localhost:8000)
+🔗 **Live URL**: [http://localhost:8000](http://localhost:8000)
 
 ---
 
-## 🛠️ Path of the Attacker: Vulnerability Walkthrough
+## 🛡️ Vulnerability Deep Dive (Technical Overview)
+
+This platform is engineered to simulate a **Security Architect's Nightmare**. Unlike basic CTFs, Burger Labs implements vulnerabilities at various layers of the stack:
+
+### 1. The Injection Layer (Critical Severity)
+*   **SQL Injection (SQLi)**: Found in authentication, search, and order tracking. We use a Mock DB Engine that supports UNION-based, Boolean-blind, and Error-based techniques.
+*   **Command Injection (RCE)**: The admin diagnostics tool directly executes system commands (`ping`), allowing for full OS takeover if not properly sanitized.
+*   **SSTI (Server-Side Template Injection)**: The analytics engine uses `eval()` on user-supplied template strings, enabling remote code execution within the PHP context.
+
+### 2. The Authorization Layer (High Severity)
+*   **BFLA (Broken Function Level Authorization)**: The `/owner/dashboard` and `/staff` portals lack robust role-based access control (RBAC). A simple horizontal or vertical jump allows customers to access executive data.
+*   **IDOR (Insecure Direct Object Reference)**: Every "Dossier" and "Profile" is accessible via predictable numerical IDs. Changing `?id=1` to `?id=2` leaks PII, bank accounts, and private notes.
+*   **Mass Assignment**: The profile update logic blindly trusts `$_POST` data. Injecting `role=owner` into a profile update request permanently promotes the attacker in the database.
+
+### 3. The Logic & Financial Layer (Moderate Severity)
+*   **Price Tampering**: The Wallet Top-up uses a simulated payment gateway that trusts a hidden `paid_amount` field. Modifying this in transit allows for balance inflation.
+*   **Race Conditions**: Concurrent requests to the refund or transfer endpoints can lead to "double spending" or "balance theft" due to non-atomic session updates.
+
+---
+
+## 🧪 Path of the Attacker: Top 10 Walkthroughs
 
 ### 1. Broken Authentication (Auth Bypass)
 *   **Vector**: Login Portal (`/login`)
