@@ -1,7 +1,10 @@
 🍔 Burger Lab Vulnerable Web Application (BLVWA)
 
 **Cook. Break. Exploit.**  
-A premium, highly intentional vulnerable web application designed for security professionals and penetration testing enthusiasts. Featuring 105+ unique security flaws across a modern, artisanal burger-themed platform.
+
+Welcome to **Burger Labs (BLVWA)**, a production-grade, high-fidelity e-commerce platform designed exclusively for **Cybersecurity Research, Penetration Testing, and Offensive Security Training**. This platform is engineered with a molecularly-inspired architecture, containing **105+ unique intentional vulnerabilities** ranging from classic OWASP Top 10 flaws to complex business logic exploits.
+
+Whether you are a security student, a bug bounty hunter, or an enterprise security architect, Burger Labs provides a realistic, high-stakes environment to sharpen your artisanal exploit skills.
 
 ---
 
