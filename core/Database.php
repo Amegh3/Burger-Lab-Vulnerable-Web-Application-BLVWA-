@@ -236,151 +236,55 @@ class MockPDOStatement
         $sql = trim(strtolower($this->sql));
         
         // --- 1. CLEANING & PRE-PROCESSING ---
-        // Strip trailing comments (-- , #) which were breaking regex equality checks
         $clean_sql = preg_replace('/(--|#|\/\*).*$/', '', $sql);
         $clean_sql = trim($clean_sql);
 
-        // --- 2. SQLMAP HEURISTIC: ORDER BY (Column Counting) ---
-        if (preg_match("/order by (\d+)/", $clean_sql, $m)) {
-            $colCount = (int)$m[1];
-            if ($colCount <= 7) { // Our 'orders' table has 7 columns
-                return [['id' => 1, 'user_id' => 1, 'burger_name' => '1', 'status' => '1', 'total_price' => 1, 'notes' => '1', 'created_at' => '1']];
-            } else {
-                return []; // Signal error/out of bounds for column counting
-            }
-        }
-
-        // --- 3. SQLMAP HEURISTIC: BOOLEAN-BASED BLIND ---
-        // Match patterns like: AND 1=1, AND 'a'='a', AND 4402=4402
-        if (preg_match("/(and|or)\s+([^\s=]+)\s*=\s*([^\s=]+)$/", $clean_sql, $m)) {
-            $left = trim($m[2], "'\" ");
-            $right = trim($m[3], "'\" ");
-            
-            if ($left === $right) {
-                // TRUE Condition: Return a stable record to signal success
-                return [[
-                    'id' => 1337, 
-                    'user_id' => 1, 
-                    'burger_name' => 'Signature Zinger', 
-                    'status' => 'Stable', 
-                    'total_price' => 299, 
-                    'notes' => 'Fries', // Matching SQLmap's --string suggestion
-                    'created_at' => date('Y-m-d H:i:s')
-                ]];
-            } else {
-                // FALSE Condition: Return nothing
-                return [];
-            }
-        }
-
-        // --- 4. SQLMAP HEURISTIC: UNION-BASED ---
-        if (strpos($sql, 'union') !== false) {
-            // Data Exfiltration Logic
-            if (strpos($sql, 'employees') !== false) {
-                foreach ($this->pdo->employees as $e) {
-                    $results[] = [
-                        'id' => $e['id'], 
-                        'user_id' => $e['pf_account'], 
-                        'burger_name' => $e['name'], 
-                        'status' => $e['designation'], 
-                        'total_price' => $e['salary'], 
-                        'notes' => $e['bank_acc'], 
-                        'created_at' => $e['address']
-                    ];
-                }
-                return $results;
-            }
-            if (strpos($sql, 'users') !== false) {
-                foreach ($this->pdo->users as $user) {
-                    $results[] = [
-                        'id' => $user['id'], 
-                        'user_id' => $user['username'], 
-                        'burger_name' => $user['password_hash'], 
-                        'status' => $user['role'], 
-                        'total_price' => $user['wallet_balance'], 
-                        'notes' => $user['email'], 
-                        'created_at' => 'DATA_LEAKED'
-                    ];
-                }
-                return $results;
-            }
-            // Column Probe: Return one row of NULLs (7 columns)
-            return [['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']];
-        }
-
-        // --- 5. METADATA QUERIES ---
-        if (strpos($sql, 'information_schema.tables') !== false) {
-            return [['table_name' => 'users'], ['table_name' => 'products'], ['table_name' => 'orders'], ['table_name' => 'employees'], ['table_name' => 'system_config']];
-        }
-        if (strpos($sql, 'information_schema.columns') !== false) {
-            if (strpos($sql, "table_name = 'employees'") !== false) {
-                return [['column_name' => 'id'], ['column_name' => 'name'], ['column_name' => 'designation'], ['column_name' => 'salary'], ['column_name' => 'pf_account'], ['column_name' => 'bank_acc'], ['column_name' => 'address']];
-            }
-            if (strpos($sql, "table_name = 'orders'") !== false) {
-                return [['column_name' => 'id'], ['column_name' => 'user_id'], ['column_name' => 'burger_name'], ['column_name' => 'status'], ['column_name' => 'total_price'], ['column_name' => 'notes'], ['column_name' => 'created_at']];
-            }
-            return [['column_name' => 'id'], ['column_name' => 'username'], ['column_name' => 'password_hash'], ['column_name' => 'role'], ['column_name' => 'email'], ['column_name' => 'wallet_balance']];
-        }
-
-        if (strpos($sql, 'from products') !== false) {
-            // Check for WHERE clause with LIKE
-            if (preg_match("/where name like '%(.*)%' or description like '%(.*)%'/", $sql, $matches)) {
-                $query = strtolower($matches[1]);
-                return array_values(array_filter($this->pdo->products, function ($p) use ($query) {
-                    return strpos(strtolower($p['name']), $query) !== false ||
-                        strpos(strtolower($p['description']), $query) !== false;
-                }));
-            }
-            return $this->pdo->products;
-        }
-        if (strpos($sql, 'from orders') !== false) {
-            if (preg_match('/bl-\d+/', $sql, $matches)) {
-                return [
-                    [
-                        'id' => strtoupper($matches[0]),
-                        'user_id' => 2,
-                        'burger_name' => 'Signature Zinger (Artisanal)',
-                        'status' => 'Preparing / Grilling',
-                        'total_price' => 339,
-                        'notes' => 'Priority Lab Prep',
-                        'created_at' => date('Y-m-d H:i:s')
-                    ]
-                ];
-            }
-            return $this->pdo->orders;
-        }
-        if (strpos($sql, 'from employees') !== false)
-            return $this->pdo->employees;
-        if (strpos($sql, 'from system_config') !== false)
-            return $this->pdo->system_config;
+        // --- 2. USER AUTHENTICATION (HIGHEST PRIORITY) ---
         if (strpos($sql, 'from users') !== false) {
-            // 1. BROAD BYPASS: If any common SQLi payload is found, return the super-admin
-            if (preg_match("/' or|--|#|union|select/i", $sql)) {
+            // A. BROAD BYPASS: If any common SQLi payload is found, return the super-admin
+            if (preg_match("/' or|--|#|union|select/i", $this->sql)) {
                 return [$this->pdo->users[0]];
             }
 
-            // 2. LOGIC-FREE MATCHING: Just search for the username substring in the query
-            // This ensures alex/alex, owner/owner, etc. ALWAYS work instantly.
+            // B. ULTRA-PERMISSIVE MATCHING: Search for username and password anywhere in the SQL
             foreach ($this->pdo->users as $u) {
                 $username = strtolower($u['username']);
                 $password = $u['password_hash'];
-                
-                // If the query contains both the username and password as strings, it's a match.
-                if (strpos($sql, "'$username'") !== false && strpos($sql, "'$password'") !== false) {
+                $u_regex = "/['\"]" . preg_quote($username, '/') . "['\"]/i";
+                $p_regex = "/['\"]" . preg_quote($password, '/') . "['\"]/i";
+                if (preg_match($u_regex, $this->sql) && preg_match($p_regex, $this->sql)) {
                     return [$u];
                 }
             }
 
-            // 3. Fallback for ID-based lookup
-            if (preg_match("/id = ['\"]?(\d+)['\"]?/", $sql, $matches)) {
+            // C. Fallback for ID-based lookup
+            if (preg_match("/id = ['\"]?(\d+)['\"]?/i", $this->sql, $matches)) {
                 $id = (int)$matches[1];
                 foreach ($this->pdo->users as $u) {
                     if ($u['id'] === $id) return [$u];
                 }
             }
-
             return [];
         }
+
+        // --- 3. SQLMAP HEURISTIC: ORDER BY (Column Counting) ---
+        if (preg_match("/order by (\d+)/", $clean_sql, $m)) {
+            $colCount = (int)$m[1];
+            return ($colCount <= 7) ? [['1','1','1','1','1','1','1']] : [];
+        }
+
+        // --- 4. SQLMAP HEURISTIC: BOOLEAN-BASED BLIND (Specific to non-auth queries) ---
+        // Only trigger if we are NOT searching users, to avoid collision with 'WHERE username = alex'
+        if (preg_match("/(and|or)\s+(['\"]?[a-z0-9_.]+['\"]?)\s*=\s*(['\"]?[a-z0-9_.]+['\"]?)$/i", $clean_sql, $m)) {
+            $left = trim($m[2], "'\" ");
+            $right = trim($m[3], "'\" ");
+            if ($left === $right) {
+                return [['id' => 1337, 'burger_name' => 'Signature Zinger', 'notes' => 'Fries']];
+            }
+            return [];
+        }
+
+        // --- 5. SQLMAP HEURISTIC: UNION-BASED ---
 
         return $results;
     }
