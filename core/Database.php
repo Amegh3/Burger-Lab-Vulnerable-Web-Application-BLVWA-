@@ -233,49 +233,49 @@ class MockPDOStatement
     public function fetchAll()
     {
         $results = [];
-        $sql = strtolower($this->sql);
+        $sql = trim(strtolower($this->sql));
+        
+        // --- 1. CLEANING & PRE-PROCESSING ---
+        // Strip trailing comments (-- , #) which were breaking regex equality checks
+        $clean_sql = preg_replace('/(--|#|\/\*).*$/', '', $sql);
+        $clean_sql = trim($clean_sql);
 
-        // --- SQLMAP HEURISTIC & PROBE SUPPORT ---
-        // Boolean-based blind: if it's a "False" probe, return nothing
-        if (preg_match("/(and|or)\s+(.+)\s*=\s*(.+)/", $sql, $m)) {
+        // --- 2. SQLMAP HEURISTIC: ORDER BY (Column Counting) ---
+        if (preg_match("/order by (\d+)/", $clean_sql, $m)) {
+            $colCount = (int)$m[1];
+            if ($colCount <= 7) { // Our 'orders' table has 7 columns
+                return [['id' => 1, 'user_id' => 1, 'burger_name' => '1', 'status' => '1', 'total_price' => 1, 'notes' => '1', 'created_at' => '1']];
+            } else {
+                return []; // Signal error/out of bounds for column counting
+            }
+        }
+
+        // --- 3. SQLMAP HEURISTIC: BOOLEAN-BASED BLIND ---
+        // Match patterns like: AND 1=1, AND 'a'='a', AND 4402=4402
+        if (preg_match("/(and|or)\s+([^\s=]+)\s*=\s*([^\s=]+)$/", $clean_sql, $m)) {
             $left = trim($m[2], "'\" ");
             $right = trim($m[3], "'\" ");
-            if ($left !== $right) return [];
-        }
-        
-        // Boolean-based blind: if it's a "True" probe, return a stable record
-        if (preg_match("/(and|or)\s+(.+)\s*=\s*\\2/", $sql) && strpos($sql, 'orders') !== false) {
-             return [[
-                 'id' => 999, 
-                 'user_id' => 1, 
-                 'burger_name' => 'Artisanal Vulnerable Burger', 
-                 'status' => 'EXPLOITABLE', 
-                 'total_price' => 1337, 
-                 'notes' => 'SQLmap Stable String', 
-                 'created_at' => date('Y-m-d H:i:s')
-             ]];
+            
+            if ($left === $right) {
+                // TRUE Condition: Return a stable record to signal success
+                return [[
+                    'id' => 1337, 
+                    'user_id' => 1, 
+                    'burger_name' => 'Signature Zinger', 
+                    'status' => 'Stable', 
+                    'total_price' => 299, 
+                    'notes' => 'Fries', // Matching SQLmap's --string suggestion
+                    'created_at' => date('Y-m-d H:i:s')
+                ]];
+            } else {
+                // FALSE Condition: Return nothing
+                return [];
+            }
         }
 
-        if (strpos($sql, 'information_schema.tables') !== false) {
-            return [['table_name' => 'users'], ['table_name' => 'products'], ['table_name' => 'orders'], ['table_name' => 'employees'], ['table_name' => 'system_config']];
-        }
-        if (strpos($sql, 'information_schema.columns') !== false) {
-            if (strpos($sql, "table_name = 'employees'") !== false) {
-                return [['column_name' => 'id'], ['column_name' => 'name'], ['column_name' => 'designation'], ['column_name' => 'salary'], ['column_name' => 'pf_account'], ['column_name' => 'bank_acc'], ['column_name' => 'address']];
-            }
-            if (strpos($sql, "table_name = 'orders'") !== false) {
-                return [['column_name' => 'id'], ['column_name' => 'user_id'], ['column_name' => 'burger_name'], ['column_name' => 'status'], ['column_name' => 'total_price'], ['column_name' => 'notes'], ['column_name' => 'created_at']];
-            }
-            return [['column_name' => 'id'], ['column_name' => 'username'], ['column_name' => 'password_hash'], ['column_name' => 'role'], ['column_name' => 'email'], ['column_name' => 'wallet_balance']];
-        }
-
+        // --- 4. SQLMAP HEURISTIC: UNION-BASED ---
         if (strpos($sql, 'union') !== false) {
-            // Handle column counting probes (e.g., UNION SELECT NULL, NULL...)
-            // Return one row of empty/null values to confirm column count
-            if (strpos($sql, 'users') === false && strpos($sql, 'employees') === false) {
-                return [['id' => 'NULL', 'user_id' => 'NULL', 'burger_name' => 'NULL', 'status' => 'NULL', 'total_price' => 0, 'notes' => 'NULL', 'created_at' => 'NULL']];
-            }
-
+            // Data Exfiltration Logic
             if (strpos($sql, 'employees') !== false) {
                 foreach ($this->pdo->employees as $e) {
                     $results[] = [
@@ -304,6 +304,22 @@ class MockPDOStatement
                 }
                 return $results;
             }
+            // Column Probe: Return one row of NULLs (7 columns)
+            return [['NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL']];
+        }
+
+        // --- 5. METADATA QUERIES ---
+        if (strpos($sql, 'information_schema.tables') !== false) {
+            return [['table_name' => 'users'], ['table_name' => 'products'], ['table_name' => 'orders'], ['table_name' => 'employees'], ['table_name' => 'system_config']];
+        }
+        if (strpos($sql, 'information_schema.columns') !== false) {
+            if (strpos($sql, "table_name = 'employees'") !== false) {
+                return [['column_name' => 'id'], ['column_name' => 'name'], ['column_name' => 'designation'], ['column_name' => 'salary'], ['column_name' => 'pf_account'], ['column_name' => 'bank_acc'], ['column_name' => 'address']];
+            }
+            if (strpos($sql, "table_name = 'orders'") !== false) {
+                return [['column_name' => 'id'], ['column_name' => 'user_id'], ['column_name' => 'burger_name'], ['column_name' => 'status'], ['column_name' => 'total_price'], ['column_name' => 'notes'], ['column_name' => 'created_at']];
+            }
+            return [['column_name' => 'id'], ['column_name' => 'username'], ['column_name' => 'password_hash'], ['column_name' => 'role'], ['column_name' => 'email'], ['column_name' => 'wallet_balance']];
         }
 
         if (strpos($sql, 'from products') !== false) {
