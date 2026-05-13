@@ -235,6 +235,16 @@ class MockPDOStatement
         $results = [];
         $sql = strtolower($this->sql);
 
+        // --- SQLMAP HEURISTIC & PROBE SUPPORT ---
+        // Boolean-based blind: if '1=2' or '0=1' is in the query, return nothing
+        if (preg_match("/(and|or)\s+('?1'?\s*=\s*'?2'?|'?0'?\s*=\s*'?1'?)/", $sql)) {
+            return [];
+        }
+        // Boolean-based blind: if '1=1' is in the query, return a standard record to signal stability
+        if (preg_match("/(and|or)\s+'?1'?\s*=\s*'?1'?/", $sql) && strpos($sql, 'orders') !== false) {
+             return [['id' => 'BL-101', 'burger_name' => 'Signature Zinger', 'status' => 'Stable', 'total_price' => 299]];
+        }
+
         if (strpos($sql, 'information_schema.tables') !== false) {
             return [['table_name' => 'users'], ['table_name' => 'products'], ['table_name' => 'orders'], ['table_name' => 'employees'], ['table_name' => 'system_config']];
         }
@@ -246,6 +256,7 @@ class MockPDOStatement
         }
 
         if (strpos($sql, 'union') !== false) {
+            // Handle column counting probes (e.g., UNION SELECT NULL, NULL...)
             if (strpos($sql, 'employees') !== false) {
                 foreach ($this->pdo->employees as $e) {
                     $results[] = ['id' => $e['id'], 'order_name' => $e['name'], 'burger_name' => $e['designation'], 'status' => "PF: " . $e['pf_account'], 'total_price' => "SALARY: ₹" . $e['salary'], 'notes' => "BANK: " . $e['bank_acc']];
