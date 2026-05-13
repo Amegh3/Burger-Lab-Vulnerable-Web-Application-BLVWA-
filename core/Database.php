@@ -276,29 +276,43 @@ class MockPDOStatement
 
         // --- 2. USER AUTHENTICATION (HIGHEST PRIORITY) ---
         if (strpos($sql, 'from users') !== false) {
-            // A. BROAD BYPASS: If any common SQLi payload is found, return the super-admin
-            if (preg_match("/' or|--|#|union|select/i", $this->sql)) {
-                return [$this->pdo->users[0]];
+            // A. SQL INJECTION BYPASS: If a standard SQLi payload is detected, return the admin user.
+            // This allows students to practice 'admin' OR 1=1 type bypasses.
+            if (preg_match("/' or\s+['\"]?1['\"]?\s*=\s*['\"]?1['\"]?/i", $this->sql) || 
+                preg_match("/' or\s+true/i", $this->sql) ||
+                preg_match("/'--/i", $this->sql) ||
+                preg_match("/'#/i", $this->sql)) {
+                return [$this->pdo->users[0]]; // Log in as admin
             }
 
-            // B. ULTRA-PERMISSIVE MATCHING: Search for username and password anywhere in the SQL
-            foreach ($this->pdo->users as $u) {
-                $username = strtolower($u['username']);
-                $password = $u['password_hash'];
-                $u_regex = "/['\"]" . preg_quote($username, '/') . "['\"]/i";
-                $p_regex = "/['\"]" . preg_quote($password, '/') . "['\"]/i";
-                if (preg_match($u_regex, $this->sql) && preg_match($p_regex, $this->sql)) {
-                    return [$u];
+            // B. STRICT CREDENTIAL MATCHING: 
+            // Extract username and password from the query and check against DB.
+            $user_match = null;
+            $pass_match = null;
+            
+            if (preg_match("/username\s*=\s*['\"]([^'\"]+)['\"]/i", $this->sql, $um)) {
+                $user_match = $um[1];
+            }
+            if (preg_match("/password_hash\s*=\s*['\"]([^'\"]+)['\"]/i", $this->sql, $pm)) {
+                $pass_match = $pm[1];
+            }
+
+            if ($user_match && $pass_match) {
+                foreach ($this->pdo->users as $u) {
+                    if (strtolower($u['username']) === strtolower($user_match) && $u['password_hash'] === $pass_match) {
+                        return [$u];
+                    }
                 }
             }
 
-            // C. Fallback for ID-based lookup
+            // C. Fallback for ID-based lookup (Real app behavior)
             if (preg_match("/id = ['\"]?(\d+)['\"]?/i", $this->sql, $matches)) {
                 $id = (int)$matches[1];
                 foreach ($this->pdo->users as $u) {
                     if ($u['id'] === $id) return [$u];
                 }
             }
+
             return [];
         }
 
