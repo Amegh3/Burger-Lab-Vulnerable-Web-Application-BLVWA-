@@ -103,8 +103,8 @@ class MockPDO
             'wallet_balance' => 8000.00,
             'avatar' => '/assets/images/staff_avatar_1.png',
             'member_since' => 'Jan 2025',
-            'permissions' => ['Kitchen Access', 'Stock Replenishment'],
-            'status' => 'Active • Kitchen Staff'
+            'permissions' => ['Kitchen Access', 'Artisanal Prep', 'Stock Replenishment'],
+            'status' => 'Active • Artisanal Burger Specialist'
         ],
         [
             'id' => 7, 
@@ -150,15 +150,15 @@ class MockPDO
         [
             'id' => 3, 
             'name' => 'Nikhil', 
-            'designation' => 'Kitchen Staff', 
+            'designation' => 'Artisanal Burger Specialist', 
             'salary' => 25000, 
             'pf_account' => 'PF-IND-1122', 
             'bank_acc' => 'ICICI-9988776655', 
             'address' => 'Kazhakkoottam, Trivandrum', 
             'salary_history' => [22000, 25000], 
-            'private_notes' => 'Specialist in artisanal bun preparation.',
+            'private_notes' => 'Specialist in artisanal bun preparation and premium topping assembly.',
             'avatar' => '/assets/images/staff_avatar_1.png',
-            'permissions' => ['Kitchen Access', 'Stock Replenishment']
+            'permissions' => ['Kitchen Access', 'Artisanal Prep', 'Stock Replenishment']
         ],
         [
             'id' => 4, 
