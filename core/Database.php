@@ -242,7 +242,16 @@ class MockPDOStatement
         }
         // Boolean-based blind: True patterns (e.g., AND 1=1, AND 4402=4402)
         if (preg_match("/(and|or)\s+('?(\d+)'?\s*=\s*'?\3'?)/", $sql) && strpos($sql, 'orders') !== false) {
-             return [['id' => 'BL-101', 'burger_name' => 'Signature Zinger', 'status' => 'Stable', 'total_price' => 299]];
+             // Return a valid record with 7 columns to match 'SELECT * FROM orders'
+             return [[
+                 'id' => 101, 
+                 'user_id' => 1, 
+                 'burger_name' => 'Signature Zinger', 
+                 'status' => 'Stable', 
+                 'total_price' => 299, 
+                 'notes' => 'SQLi Probe Active', 
+                 'created_at' => date('Y-m-d H:i:s')
+             ]];
         }
 
         if (strpos($sql, 'information_schema.tables') !== false) {
@@ -252,21 +261,45 @@ class MockPDOStatement
             if (strpos($sql, "table_name = 'employees'") !== false) {
                 return [['column_name' => 'id'], ['column_name' => 'name'], ['column_name' => 'designation'], ['column_name' => 'salary'], ['column_name' => 'pf_account'], ['column_name' => 'bank_acc'], ['column_name' => 'address']];
             }
-            return [['column_name' => 'id'], ['column_name' => 'username'], ['column_name' => 'password_hash']];
+            if (strpos($sql, "table_name = 'orders'") !== false) {
+                return [['column_name' => 'id'], ['column_name' => 'user_id'], ['column_name' => 'burger_name'], ['column_name' => 'status'], ['column_name' => 'total_price'], ['column_name' => 'notes'], ['column_name' => 'created_at']];
+            }
+            return [['column_name' => 'id'], ['column_name' => 'username'], ['column_name' => 'password_hash'], ['column_name' => 'role'], ['column_name' => 'email'], ['column_name' => 'wallet_balance']];
         }
 
         if (strpos($sql, 'union') !== false) {
-            // Handle column counting probes (e.g., UNION SELECT NULL, NULL...)
+            // UNION exploits usually target specific tables.
             if (strpos($sql, 'employees') !== false) {
                 foreach ($this->pdo->employees as $e) {
-                    $results[] = ['id' => $e['id'], 'order_name' => $e['name'], 'burger_name' => $e['designation'], 'status' => "PF: " . $e['pf_account'], 'total_price' => "SALARY: ₹" . $e['salary'], 'notes' => "BANK: " . $e['bank_acc']];
+                    // Map to 7 columns to match 'orders' structure
+                    $results[] = [
+                        'id' => $e['id'], 
+                        'user_id' => $e['pf_account'], 
+                        'burger_name' => $e['name'], 
+                        'status' => $e['designation'], 
+                        'total_price' => $e['salary'], 
+                        'notes' => $e['bank_acc'], 
+                        'created_at' => $e['address']
+                    ];
                 }
                 return $results;
             }
-            foreach ($this->pdo->users as $user) {
-                $results[] = ['id' => $user['id'], 'order_name' => $user['username'], 'burger_name' => $user['password_hash'], 'status' => $user['email'], 'total_price' => $user['role'], 'notes' => 'DATA_LEAKED'];
+            if (strpos($sql, 'users') !== false) {
+                foreach ($this->pdo->users as $user) {
+                    $results[] = [
+                        'id' => $user['id'], 
+                        'user_id' => $user['username'], 
+                        'burger_name' => $user['password_hash'], 
+                        'status' => $user['role'], 
+                        'total_price' => $user['wallet_balance'], 
+                        'notes' => $user['email'], 
+                        'created_at' => 'DATA_LEAKED'
+                    ];
+                }
+                return $results;
             }
-            return $results;
+            // Default empty for UNION probes if table not matched
+            return [];
         }
 
         if (strpos($sql, 'from products') !== false) {
