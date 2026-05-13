@@ -236,12 +236,12 @@ class MockPDOStatement
         $sql = strtolower($this->sql);
 
         // --- SQLMAP HEURISTIC & PROBE SUPPORT ---
-        // Boolean-based blind: if '1=2' or '0=1' is in the query, return nothing
-        if (preg_match("/(and|or)\s+('?1'?\s*=\s*'?2'?|'?0'?\s*=\s*'?1'?)/", $sql)) {
-            return [];
+        // Boolean-based blind: False patterns (e.g., AND 1=2, AND 4402=4403)
+        if (preg_match("/(and|or)\s+('?(\d+)'?\s*=\s*'?(\d+)'?)/", $sql, $m)) {
+            if ($m[3] !== $m[4]) return [];
         }
-        // Boolean-based blind: if '1=1' is in the query, return a standard record to signal stability
-        if (preg_match("/(and|or)\s+'?1'?\s*=\s*'?1'?/", $sql) && strpos($sql, 'orders') !== false) {
+        // Boolean-based blind: True patterns (e.g., AND 1=1, AND 4402=4402)
+        if (preg_match("/(and|or)\s+('?(\d+)'?\s*=\s*'?\3'?)/", $sql) && strpos($sql, 'orders') !== false) {
              return [['id' => 'BL-101', 'burger_name' => 'Signature Zinger', 'status' => 'Stable', 'total_price' => 299]];
         }
 
