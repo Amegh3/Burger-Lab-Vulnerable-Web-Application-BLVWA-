@@ -31,7 +31,7 @@ class MockPDO {
     public $users = [
         ['id' => 1, 'username' => 'admin', 'password_hash' => 'admin_lab_pass_2026', 'email' => 'admin@burgerlabs.htb', 'role' => 'admin', 'wallet_balance' => 99999.00],
         ['id' => 2, 'username' => 'guest', 'password_hash' => 'guest', 'email' => 'guest@example.com', 'role' => 'customer', 'wallet_balance' => 5000.00],
-        ['id' => 3, 'username' => 'chief_executive', 'password_hash' => 'FounderSecret2026!', 'email' => 'founder@burgerlabs.htb', 'role' => 'owner', 'wallet_balance' => 1500000.00]
+        ['id' => 3, 'username' => 'owner', 'password_hash' => 'owner', 'email' => 'founder@burgerlabs.htb', 'role' => 'owner', 'wallet_balance' => 1500000.00]
     ];
 
     public $employees = [
