@@ -104,6 +104,7 @@ $router->get('/wallet/topup', [WalletController::class, 'topup']);
 $router->post('/wallet/topup', [WalletController::class, 'topup']);
 $router->get('/wallet/transfer', [WalletController::class, 'transfer']);
 $router->post('/wallet/transfer', [WalletController::class, 'transfer']);
+$router->post('/wallet/verify-payment', [WalletController::class, 'verifyPayment']);
 
 // ═══════════════════════════════════════════════
 //  COUPONS (Brute Force + Reuse)

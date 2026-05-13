@@ -17,28 +17,48 @@ class WalletController extends Controller {
         ], 'layout');
     }
 
-    // ─── TOP UP: VULNERABILITY — Price Tampering ───
-    // Amount comes from client-side, no server validation
+    // ─── TOP UP: VULNERABILITY — Price Tampering & Logic Flaws ───
+    // Now requires a "Simulated Payment" which can be tampered with.
     public function topup() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // VULNERABILITY: Accepts any amount including negative
             $amount = (float)($_POST['amount'] ?? 0);
+            $plan   = $_POST['plan_id'] ?? 'standard';
             
-            $_SESSION['user']['wallet_balance'] = 
-                ($_SESSION['user']['wallet_balance'] ?? 50.00) + $amount;
-
-            // Log transaction
-            $_SESSION['wallet_transactions'][] = [
-                'type'   => 'topup',
+            // Simulation of a payment gateway redirect
+            $this->view('wallet/pay', [
                 'amount' => $amount,
-                'date'   => date('M d, H:i'),
-                'note'   => 'Wallet Top-up'
-            ];
-
-            header('Location: /wallet');
-            exit;
+                'plan'   => $plan
+            ], 'layout');
+            return;
         }
         $this->view('wallet/topup', [], 'layout');
+    }
+
+    public function verifyPayment() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // VULNERABILITY: Blindly trusting the 'paid_amount' from the client-side POST.
+            // A user can change the hidden field 'paid_amount' to a massive value,
+            // or even use a negative value if the logic is flawed.
+            $paidAmount = (float)($_POST['paid_amount'] ?? 0);
+            $status = $_POST['status'] ?? 'failed';
+
+            if ($status === 'success') {
+                $_SESSION['user']['wallet_balance'] = 
+                    ($_SESSION['user']['wallet_balance'] ?? 50.00) + $paidAmount;
+
+                // Log transaction
+                $_SESSION['wallet_transactions'][] = [
+                    'type'   => 'topup',
+                    'amount' => $paidAmount,
+                    'date'   => date('M d, H:i'),
+                    'note'   => 'Artisanal Lab Top-up (Verified)'
+                ];
+                
+                header('Location: /wallet?success=Payment+Verified');
+                exit;
+            }
+        }
+        header('Location: /wallet?error=Payment+Failed');
     }
 
     // ─── TRANSFER: VULNERABILITY — IDOR + Negative Transfer + Race Condition ───
