@@ -2,6 +2,8 @@
 
 **Cook. Break. Exploit.**  
 
+![Burger Labs Hero](/assets/images/home_login.png)
+
 Welcome to **Burger Labs (BLVWA)**, a production-grade, high-fidelity e-commerce platform designed exclusively for **Cybersecurity Research, Penetration Testing, and Offensive Security Training**. This platform is engineered with a molecularly-inspired architecture, containing **105+ unique intentional vulnerabilities** ranging from classic OWASP Top 10 flaws to complex business logic exploits.
 
 Whether you are a security student, a bug bounty hunter, or an enterprise security architect, Burger Labs provides a realistic, high-stakes environment to sharpen your artisanal exploit skills.
@@ -38,16 +40,19 @@ bash start_lab.sh
 This platform is engineered to simulate a **Security Architect's Nightmare**. Unlike basic CTFs, Burger Labs implements vulnerabilities at various layers of the stack:
 
 ### 1. The Injection Layer (Critical Severity)
+![Menu Vulnerability](/assets/images/menu.png)
 *   **SQL Injection (SQLi)**: Found in authentication, search, and order tracking. We use a Mock DB Engine that supports UNION-based, Boolean-blind, and Error-based techniques.
 *   **Command Injection (RCE)**: The admin diagnostics tool directly executes system commands (`ping`), allowing for full OS takeover if not properly sanitized.
 *   **SSTI (Server-Side Template Injection)**: The analytics engine uses `eval()` on user-supplied template strings, enabling remote code execution within the PHP context.
 
 ### 2. The Authorization Layer (High Severity)
+![Executive Dashboard](/assets/images/owner_dashboard.png)
 *   **BFLA (Broken Function Level Authorization)**: The `/owner/dashboard` and `/staff` portals lack robust role-based access control (RBAC). A simple horizontal or vertical jump allows customers to access executive data.
 *   **IDOR (Insecure Direct Object Reference)**: Every "Dossier" and "Profile" is accessible via predictable numerical IDs. Changing `?id=1` to `?id=2` leaks PII, bank accounts, and private notes.
 *   **Mass Assignment**: The profile update logic blindly trusts `$_POST` data. Injecting `role=owner` into a profile update request permanently promotes the attacker in the database.
 
 ### 3. The Logic & Financial Layer (Moderate Severity)
+![Wallet Vulnerability](/assets/images/wallet.png)
 *   **Price Tampering**: The Wallet Top-up uses a simulated payment gateway that trusts a hidden `paid_amount` field. Modifying this in transit allows for balance inflation.
 *   **Race Conditions**: Concurrent requests to the refund or transfer endpoints can lead to "double spending" or "balance theft" due to non-atomic session updates.
 
