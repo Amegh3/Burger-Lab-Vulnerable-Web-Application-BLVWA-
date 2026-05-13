@@ -197,4 +197,3 @@ Burger Labs is **not a real company**. It is a strictly fictional entity created
 *   **LinkedIn**: https://www.linkedin.com/in/ameghayiratt/
 
 
-https://burger-lab-vulnerable-web-application-tnvx.onrender.com/admin/diagnostics
