@@ -73,10 +73,58 @@ class MockPDO
     ];
 
     public $employees = [
-        ['id' => 1, 'name' => 'Arun Kumar', 'designation' => 'Executive Chef', 'salary' => 85000, 'pf_account' => 'PF-IND-8821', 'bank_acc' => 'SBI-1100223344', 'address' => 'Vazhuthacaud, Trivandrum', 'salary_history' => [80000, 82000, 85000], 'private_notes' => 'Top performer. Review for bonus.'],
-        ['id' => 2, 'name' => 'Meera Nair', 'designation' => 'Store Manager', 'salary' => 65000, 'pf_account' => 'PF-IND-9910', 'bank_acc' => 'HDFC-4455667788', 'address' => 'Pattom, Trivandrum', 'salary_history' => [60000, 65000], 'private_notes' => 'Manages kitchen operations efficiently.'],
-        ['id' => 3, 'name' => 'Rahul Das', 'designation' => 'Kitchen Staff', 'salary' => 25000, 'pf_account' => 'PF-IND-1122', 'bank_acc' => 'ICICI-9988776655', 'address' => 'Kazhakkoottam, Trivandrum', 'salary_history' => [22000, 25000], 'private_notes' => 'New recruit. Needs training on safety.'],
-        ['id' => 4, 'name' => 'Sneha Pillai', 'designation' => 'Cashier', 'salary' => 22000, 'pf_account' => 'PF-IND-3344', 'bank_acc' => 'AXIS-5544332211', 'address' => 'Peroorkada, Trivandrum', 'salary_history' => [20000, 22000], 'private_notes' => 'Excellent customer handling skills.']
+        [
+            'id' => 1, 
+            'name' => 'Alex Idicula Mathews', 
+            'designation' => 'Executive Chef', 
+            'salary' => 85000, 
+            'pf_account' => 'PF-IND-8821', 
+            'bank_acc' => 'SBI-1100223344', 
+            'address' => 'Vazhuthacaud, Trivandrum', 
+            'salary_history' => [80000, 82000, 85000], 
+            'private_notes' => 'Top performer. Head of molecular gastronomy.',
+            'avatar' => '/assets/images/chef_avatar.png',
+            'permissions' => ['Kitchen Authority', 'Menu Management', 'Inventory Control']
+        ],
+        [
+            'id' => 2, 
+            'name' => 'Abhinand R', 
+            'designation' => 'Store Manager', 
+            'salary' => 65000, 
+            'pf_account' => 'PF-IND-9910', 
+            'bank_acc' => 'HDFC-4455667788', 
+            'address' => 'Pattom, Trivandrum', 
+            'salary_history' => [60000, 65000], 
+            'private_notes' => 'Manages operations and staff shifts.',
+            'avatar' => '/assets/images/manager_avatar.png',
+            'permissions' => ['Staff Scheduling', 'POS Access', 'Daily Reports']
+        ],
+        [
+            'id' => 3, 
+            'name' => 'Nikhil', 
+            'designation' => 'Kitchen Staff', 
+            'salary' => 25000, 
+            'pf_account' => 'PF-IND-1122', 
+            'bank_acc' => 'ICICI-9988776655', 
+            'address' => 'Kazhakkoottam, Trivandrum', 
+            'salary_history' => [22000, 25000], 
+            'private_notes' => 'Specialist in artisanal bun preparation.',
+            'avatar' => '/assets/images/staff_avatar_1.png',
+            'permissions' => ['Kitchen Access', 'Stock Replenishment']
+        ],
+        [
+            'id' => 4, 
+            'name' => 'Vishnu 2', 
+            'designation' => 'Cashier', 
+            'salary' => 22000, 
+            'pf_account' => 'PF-IND-3344', 
+            'bank_acc' => 'AXIS-5544332211', 
+            'address' => 'Peroorkada, Trivandrum', 
+            'salary_history' => [20000, 22000], 
+            'private_notes' => 'Excellent handling of premium customer wallet top-ups.',
+            'avatar' => '/assets/images/staff_avatar_2.png',
+            'permissions' => ['Wallet Management', 'Coupon Validation', 'Transaction Logs']
+        ]
     ];
 
     public $system_config = [
