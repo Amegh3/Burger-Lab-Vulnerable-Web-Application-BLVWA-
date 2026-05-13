@@ -40,37 +40,11 @@ class OrderController extends Controller {
         }
 
         try {
-            if ($difficulty === 'soft_bun') {
-                // Soft Bun (Easy): Direct unescaped concatenation.
-                // Payload: ' UNION SELECT 1,username,password_hash,email,5,6,7 FROM users-- -
-                $sql = "SELECT * FROM orders WHERE burger_name LIKE '%" . $queryParam . "%'";
-                $stmt = $db->query($sql);
-                $results = $stmt->fetchAll();
-            } 
-            elseif ($difficulty === 'grilled_bun') {
-                // Grilled Bun (Medium): Simple addslashes, can be bypassed if encoding issues or just use boolean blind if not fully protected.
-                // Actually, let's use a weak filter. Removing 'UNION' or 'SELECT'
-                $queryParam = preg_replace('/UNION|SELECT/i', '', $queryParam);
-                $sql = "SELECT * FROM orders WHERE burger_name LIKE '%" . $queryParam . "%'";
-                $stmt = $db->query($sql);
-                $results = $stmt->fetchAll();
-            }
-            elseif ($difficulty === 'burnt_bun') {
-                // Burnt Bun (Hard): Strict WAF simulation. Block common keywords and spaces.
-                if (preg_match('/UNION|SELECT|OR|AND|--|#|\s/i', $queryParam)) {
-                    throw new \Exception("WAF Alert: Malicious payload detected!");
-                }
-                $sql = "SELECT * FROM orders WHERE burger_name LIKE '%" . $queryParam . "%'";
-                $stmt = $db->query($sql);
-                $results = $stmt->fetchAll();
-            }
-            else {
-                // Black Hole Burger (Impossible / Secure): Prepared Statements
-                $sql = "SELECT * FROM orders WHERE burger_name LIKE ?";
-                $stmt = $db->prepare($sql);
-                $stmt->execute(['%' . $queryParam . '%']);
-                $results = $stmt->fetchAll();
-            }
+            // 100% VULNERABLE MODE: Direct unescaped concatenation. No WAF, No Protection.
+            // Payload: ' UNION SELECT 1,username,password_hash,email,5,6,7 FROM users-- -
+            $sql = "SELECT * FROM orders WHERE burger_name LIKE '%" . $queryParam . "%'";
+            $stmt = $db->query($sql);
+            $results = $stmt->fetchAll();
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
