@@ -276,6 +276,6 @@ Burger Labs is **not a real company**. It is a strictly fictional entity created
 ---
 
 ## 👨‍🔬 Creator Credits
-*   **Developer**: (https://www.linkedin.com/in/ameghayiratt/)
+*   **Developer**: Amegh Ayiratt
 *   **Contact**: ttariyahgema@gmail.com
 *   **LinkedIn**: https://www.linkedin.com/in/ameghayiratt/
