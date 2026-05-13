@@ -75,7 +75,7 @@ class MockPDO
     public $employees = [
         [
             'id' => 1, 
-            'name' => 'Alex Idicula Mathews', 
+            'name' => 'Alex Idicula', 
             'designation' => 'Executive Chef', 
             'salary' => 85000, 
             'pf_account' => 'PF-IND-8821', 
@@ -88,7 +88,7 @@ class MockPDO
         ],
         [
             'id' => 2, 
-            'name' => 'Abhinand R', 
+            'name' => 'Abhinand ', 
             'designation' => 'Store Manager', 
             'salary' => 65000, 
             'pf_account' => 'PF-IND-9910', 
@@ -245,6 +245,15 @@ class MockPDOStatement
             // VULNERABILITY SIMULATION: If SQLi payload is detected, return all users
             if (strpos($sql, "' or '1'='1") !== false || strpos($sql, "' or 1=1") !== false) {
                 return $this->pdo->users;
+            }
+
+            // Handle ID-based lookup (e.g., SELECT * FROM users WHERE id = '1')
+            if (preg_match("/where id = '(\d+)'/", $sql, $matches)) {
+                $id = (int)$matches[1];
+                $filtered = array_filter($this->pdo->users, function ($user) use ($id) {
+                    return $user['id'] === $id;
+                });
+                return array_values($filtered);
             }
 
             // Otherwise, simulate a strict WHERE clause for username and password
