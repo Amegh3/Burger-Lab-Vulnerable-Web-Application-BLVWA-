@@ -69,6 +69,32 @@ Burger Labs is built for security testing to provide a realistic, professional t
     2. When an administrator views the ticket in the back-end, their session cookie is leaked.
 *   **Outcome**: Administrative account takeover.
 
+### 8. Host Header Injection (Password Reset)
+*   **Vector**: Password Reset Portal (`/forgot-password`)
+*   **Vulnerability**: Blindly trusting the `Host` header to generate reset links.
+*   **Exploit**: 
+    1. Go to `/forgot-password`.
+    2. Enter an email address.
+    3. Intercept the request and change the `Host` header to `attacker.com`.
+    4. The generated reset link will now point to `attacker.com`.
+*   **Outcome**: Hijack password reset tokens by tricking users into clicking malicious links.
+
+### 9. JWT Authentication Bypass
+*   **Vector**: Advanced Lab (`/lab/jwt/1`)
+*   **Vulnerability**: Predictable or missing signature validation in the `auth_token` cookie.
+*   **Exploit**: 
+    1. View the JWT lab page.
+    2. Edit the `auth_token` cookie in your browser.
+    3. Base64 decode the cookie, change `"role": "customer"` to `"role": "admin"`, and re-encode it.
+*   **Outcome**: Vertical privilege escalation to Administrator.
+
+### 10. CRLF Injection (Header Splitting)
+*   **Vector**: Advanced Lab (`/lab/crlf/1`)
+*   **Vulnerability**: Unsanitized input in the `Location` header.
+*   **Exploit**: 
+    1. Use the parameter `?url=/%0d%0aSet-Cookie:session=hijacked`.
+*   **Outcome**: Session fixation or cookie injection via response header splitting.
+
 ### 💉 Injection & Scripting (1-40)
 1. **[Login]** SQL Injection: Classic Tautology Auth Bypass.
 2. **[Search]** SQL Injection: UNION-based data exfiltration.
