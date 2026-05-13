@@ -236,20 +236,22 @@ class MockPDOStatement
         $sql = strtolower($this->sql);
 
         // --- SQLMAP HEURISTIC & PROBE SUPPORT ---
-        // Boolean-based blind: False patterns (e.g., AND 1=2, AND 4402=4403)
-        if (preg_match("/(and|or)\s+('?(\d+)'?\s*=\s*'?(\d+)'?)/", $sql, $m)) {
-            if ($m[3] !== $m[4]) return [];
+        // Boolean-based blind: if it's a "False" probe, return nothing
+        if (preg_match("/(and|or)\s+(.+)\s*=\s*(.+)/", $sql, $m)) {
+            $left = trim($m[2], "'\" ");
+            $right = trim($m[3], "'\" ");
+            if ($left !== $right) return [];
         }
-        // Boolean-based blind: True patterns (e.g., AND 1=1, AND 4402=4402)
-        if (preg_match("/(and|or)\s+('?(\d+)'?\s*=\s*'?\3'?)/", $sql) && strpos($sql, 'orders') !== false) {
-             // Return a valid record with 7 columns to match 'SELECT * FROM orders'
+        
+        // Boolean-based blind: if it's a "True" probe, return a stable record
+        if (preg_match("/(and|or)\s+(.+)\s*=\s*\\2/", $sql) && strpos($sql, 'orders') !== false) {
              return [[
-                 'id' => 101, 
+                 'id' => 999, 
                  'user_id' => 1, 
-                 'burger_name' => 'Signature Zinger', 
-                 'status' => 'Stable', 
-                 'total_price' => 299, 
-                 'notes' => 'SQLi Probe Active', 
+                 'burger_name' => 'Artisanal Vulnerable Burger', 
+                 'status' => 'EXPLOITABLE', 
+                 'total_price' => 1337, 
+                 'notes' => 'SQLmap Stable String', 
                  'created_at' => date('Y-m-d H:i:s')
              ]];
         }
@@ -268,10 +270,14 @@ class MockPDOStatement
         }
 
         if (strpos($sql, 'union') !== false) {
-            // UNION exploits usually target specific tables.
+            // Handle column counting probes (e.g., UNION SELECT NULL, NULL...)
+            // Return one row of empty/null values to confirm column count
+            if (strpos($sql, 'users') === false && strpos($sql, 'employees') === false) {
+                return [['id' => 'NULL', 'user_id' => 'NULL', 'burger_name' => 'NULL', 'status' => 'NULL', 'total_price' => 0, 'notes' => 'NULL', 'created_at' => 'NULL']];
+            }
+
             if (strpos($sql, 'employees') !== false) {
                 foreach ($this->pdo->employees as $e) {
-                    // Map to 7 columns to match 'orders' structure
                     $results[] = [
                         'id' => $e['id'], 
                         'user_id' => $e['pf_account'], 
@@ -298,8 +304,6 @@ class MockPDOStatement
                 }
                 return $results;
             }
-            // Default empty for UNION probes if table not matched
-            return [];
         }
 
         if (strpos($sql, 'from products') !== false) {
