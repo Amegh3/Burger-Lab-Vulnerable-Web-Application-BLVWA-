@@ -29,23 +29,45 @@ class ProfileController extends Controller {
     public function edit() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $db = Database::getInstance()->getConnection();
-            
-            // VULNERABILITY: Mass Assignment — all POST fields accepted
-            // Attacker can send role=admin or wallet_balance=99999
-            $fields = [];
-            foreach ($_POST as $key => $value) {
-                $fields[] = "$key = '$value'";
-            }
             $userId = $_SESSION['user']['id'] ?? 1;
-            $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = '$userId'";
-            $db->query($sql);
-
-            // Simulate the update in session
-            foreach ($_POST as $key => $value) {
-                if (isset($_SESSION['user'][$key])) {
-                    $_SESSION['user'][$key] = $value;
+            
+            // --- UNRESTRICTED FILE UPLOAD VULNERABILITY ---
+            // No extension check, no MIME check. Allows uploading .php files.
+            if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = __DIR__ . '/../../public/uploads/';
+                if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+                
+                $fileName = basename($_FILES['avatar']['name']);
+                $uploadFile = $uploadDir . $fileName;
+                
+                if (move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadFile)) {
+                    // Update user's avatar path in DB
+                    $avatarPath = '/uploads/' . $fileName;
+                    $db->query("UPDATE users SET avatar = '$avatarPath' WHERE id = '$userId'");
+                    $_SESSION['user']['avatar'] = $avatarPath;
                 }
             }
+
+            // VULNERABILITY: Mass Assignment — all POST fields accepted
+            $fields = [];
+            foreach ($_POST as $key => $value) {
+                // Skip if it's not a valid field or just a placeholder
+                if ($key === 'avatar' || empty($key)) continue;
+                $fields[] = "$key = '$value'";
+            }
+            
+            if (!empty($fields)) {
+                $sql = "UPDATE users SET " . implode(', ', $fields) . " WHERE id = '$userId'";
+                $db->query($sql);
+
+                // Update session
+                foreach ($_POST as $key => $value) {
+                    if (isset($_SESSION['user'][$key])) {
+                        $_SESSION['user'][$key] = $value;
+                    }
+                }
+            }
+
             // VULNERABILITY: If role was sent, update session role too
             if (isset($_POST['role'])) {
                 $_SESSION['user']['role'] = $_POST['role'];
