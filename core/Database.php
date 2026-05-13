@@ -69,6 +69,54 @@ class MockPDO
             'member_since' => 'Oct 2023',
             'permissions' => ['Total Authority', 'Equity Access', 'Staff Payroll', 'Executive Command'],
             'status' => 'Active • Founder & CEO'
+        ],
+        [
+            'id' => 4, 
+            'username' => 'alex', 
+            'password_hash' => 'alex', 
+            'email' => 'alex@burgerlabs.htb', 
+            'role' => 'staff', 
+            'wallet_balance' => 25000.00,
+            'avatar' => '/assets/images/chef_avatar.png',
+            'member_since' => 'Mar 2024',
+            'permissions' => ['Kitchen Authority', 'Menu Management', 'Inventory Control'],
+            'status' => 'Active • Executive Chef'
+        ],
+        [
+            'id' => 5, 
+            'username' => 'abhinand', 
+            'password_hash' => 'abhinand', 
+            'email' => 'abhinand@burgerlabs.htb', 
+            'role' => 'staff', 
+            'wallet_balance' => 18000.00,
+            'avatar' => '/assets/images/manager_avatar.png',
+            'member_since' => 'Jun 2024',
+            'permissions' => ['Staff Scheduling', 'POS Access', 'Daily Reports'],
+            'status' => 'Active • Store Manager'
+        ],
+        [
+            'id' => 6, 
+            'username' => 'nikhil', 
+            'password_hash' => 'nikhil', 
+            'email' => 'nikhil@burgerlabs.htb', 
+            'role' => 'staff', 
+            'wallet_balance' => 8000.00,
+            'avatar' => '/assets/images/staff_avatar_1.png',
+            'member_since' => 'Jan 2025',
+            'permissions' => ['Kitchen Access', 'Stock Replenishment'],
+            'status' => 'Active • Kitchen Staff'
+        ],
+        [
+            'id' => 7, 
+            'username' => 'vishnu', 
+            'password_hash' => 'vishnu', 
+            'email' => 'vishnu@burgerlabs.htb', 
+            'role' => 'staff', 
+            'wallet_balance' => 12000.00,
+            'avatar' => '/assets/images/staff_avatar_2.png',
+            'member_since' => 'Feb 2025',
+            'permissions' => ['Wallet Management', 'Coupon Validation', 'Transaction Logs'],
+            'status' => 'Active • Head Cashier'
         ]
     ];
 
