@@ -141,6 +141,18 @@ This platform is engineered to simulate a **Security Architect's Nightmare**. Un
     1. Use the parameter `?url=/%0d%0aSet-Cookie:session=hijacked`.
 *   **Outcome**: Session fixation or cookie injection via response header splitting.
 
+### 11. Executive Privilege Escalation (The Owner Breach)
+*   **Vector**: User Profile Edit (`/profile/edit`)
+*   **Vulnerability**: **Mass Assignment**. The server blindly accepts all POST parameters, including `role`.
+*   **Exploit**: 
+    1. Login as `guest`.
+    2. Go to your Profile Edit page.
+    3. Use Burp Suite or Inspect Element to add a new field: `<input type="hidden" name="role" value="owner">`.
+    4. Save the profile.
+*   **Outcome**: Permanent elevation to **Owner** status. You now have full access to the **Founder's Command Centre** at `/owner/dashboard`, including staff payroll and private executive dossiers.
+
+---
+
 ### 💉 Injection & Scripting (1-40)
 1. **[Login]** SQL Injection: Classic Tautology Auth Bypass.
 2. **[Search]** SQL Injection: UNION-based data exfiltration.
