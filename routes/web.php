@@ -12,6 +12,14 @@ use App\Controllers\CouponController;
 use App\Controllers\AdminController;
 use App\Controllers\StaffController;
 use App\Controllers\NotificationController;
+use App\Controllers\OwnerController;
+
+// ═══════════════════════════════════════════════
+//  EXECUTIVE PORTAL (Owner Only — BFLA + CSRF + IDOR)
+// ═══════════════════════════════════════════════
+$router->get('/owner/dashboard', [OwnerController::class, 'dashboard']);
+$router->get('/owner/employee/details', [OwnerController::class, 'employeeDetails']);
+$router->post('/owner/salary/update', [OwnerController::class, 'updateSalary']);
 
 // ═══════════════════════════════════════════════
 //  PUBLIC PAGES

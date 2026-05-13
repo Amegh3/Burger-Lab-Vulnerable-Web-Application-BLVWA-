@@ -10,7 +10,7 @@ return [
     // Core Vulnerability settings
     'vulnerabilities' => [
         'enabled' => true, // Global toggle
-        'difficulty' => 'medium', // soft_bun, grilled_bun, burnt_bun, black_hole
+        'difficulty' => 'soft_bun', // soft_bun (No Protection), grilled_bun, burnt_bun, black_hole
     ],
     
     'jwt_secret' => 'HGEMA_EXPLOIT_ENGINE_SUPER_SECRET_KEY_2026',
