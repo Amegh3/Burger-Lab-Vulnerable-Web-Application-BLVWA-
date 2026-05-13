@@ -73,6 +73,7 @@ class MockPDO
         [
             'id' => 4, 
             'username' => 'alex', 
+            'full_name' => 'Alex Idicula',
             'password_hash' => 'alex', 
             'email' => 'alex@burgerlabs.htb', 
             'role' => 'staff', 
@@ -80,7 +81,7 @@ class MockPDO
             'avatar' => '/assets/images/chef_avatar.png',
             'member_since' => 'Mar 2024',
             'permissions' => ['Kitchen Authority', 'Menu Management', 'Inventory Control'],
-            'status' => 'Active • Executive Chef'
+            'status' => 'Active • Executive Chef Alex Idicula'
         ],
         [
             'id' => 5, 
