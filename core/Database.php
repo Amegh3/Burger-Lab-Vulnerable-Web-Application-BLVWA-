@@ -361,7 +361,33 @@ class MockPDOStatement
             return [];
         }
 
-        // --- 5. SQLMAP HEURISTIC: UNION-BASED ---
+        // --- 5. GENERIC TABLE LOOKUP (Products, Orders, Config) ---
+        if (strpos($sql, 'from products') !== false) {
+            $category_filter = null;
+            if (preg_match("/category\s*=\s*['\"]([^'\"]+)['\"]/i", $this->sql, $cm)) {
+                $category_filter = $cm[1];
+            }
+
+            foreach ($this->pdo->products as $p) {
+                if ($category_filter && strtolower($p['category']) !== strtolower($category_filter)) continue;
+                $results[] = $p;
+            }
+            return $results;
+        }
+
+        if (strpos($sql, 'from orders') !== false) {
+            return $this->pdo->orders;
+        }
+
+        if (strpos($sql, 'from system_config') !== false) {
+            return $this->pdo->system_config;
+        }
+
+        // --- 6. SQLMAP HEURISTIC: UNION-BASED ---
+        if (strpos($sql, 'union select') !== false) {
+            // Simulate a 7-column union return
+            return [['1', 'vulnerable_admin', 'secret_hash', 'admin@burgerlabs.htb', 'admin', '9999.99', '2026-05-01']];
+        }
 
         return $results;
     }

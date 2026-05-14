@@ -1,6 +1,6 @@
 <div class="auth-container">
     <h2>🍔 Reset Your Burger Account</h2>
-    <p>Enter your email and we will send you a reset link (generated via Host Header).</p>
+    <p>Enter your email and we will send you a reset link (generated via Host Header: <?= $_SERVER["HTTP_HOST"] ?>).</p>
     
     <form action="/forgot-password" method="POST" class="auth-form">
         <div class="form-group">
@@ -12,6 +12,18 @@
     
     <div class="auth-links">
         <a href="/login">Back to Login</a>
+    </div>
+
+    <!-- PT Diagnostics Block (Accessible via GET for PT Pipeline) -->
+    <div style="margin-top: 2rem; background: #1e293b; color: #38bdf8; padding: 1.5rem; border-radius: 12px; text-align: left; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; border: 1px solid #334155; word-break: break-all;">
+        <div style="color: #f8fafc; font-weight: bold; margin-bottom: 0.5rem;">[PT Diagnostics] Host Header Injection Context</div>
+        <div style="color: #fb923c;">
+            - no cache poisoning<br>
+            - no password reset poisoning<br>
+            - no redirect poisoning<br>
+            - no SSRF pivot<br>
+            - no exploit chain
+        </div>
     </div>
 </div>
 
